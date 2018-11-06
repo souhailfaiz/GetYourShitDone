@@ -7,4 +7,4 @@ Requirements:
 - Een to-do kan gevinkt of afgevinkt worden.
 - Afgevinkte to-do's komen te staan in een andere pagina (in de menu).
 - Elke to-do heeft een kleur als prioriteit.
-- Er moet een whatsapp koppeling in zitten. 
+- Er moet een whatsapp/facebook/insta koppeling in zitten. 
