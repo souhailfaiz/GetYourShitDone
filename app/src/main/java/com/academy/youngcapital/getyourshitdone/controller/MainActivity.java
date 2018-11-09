@@ -1,4 +1,4 @@
-package com.academy.youngcapital.getyourshitdone;
+package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import static android.support.v7.widget.ListPopupWindow.MATCH_PARENT;
+import com.academy.youngcapital.getyourshitdone.R;
+import com.academy.youngcapital.getyourshitdone.model.Category;
 
 public class MainActivity extends AppCompatActivity {
 

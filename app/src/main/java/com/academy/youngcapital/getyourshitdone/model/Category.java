@@ -1,4 +1,4 @@
-package com.academy.youngcapital.getyourshitdone;
+package com.academy.youngcapital.getyourshitdone.model;
 
 public class Category{
     private String title;

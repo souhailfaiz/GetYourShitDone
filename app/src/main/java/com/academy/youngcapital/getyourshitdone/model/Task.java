@@ -1,4 +1,7 @@
-package com.academy.youngcapital.getyourshitdone;
+package com.academy.youngcapital.getyourshitdone.model;
+
+import com.academy.youngcapital.getyourshitdone.model.Attachment;
+import com.academy.youngcapital.getyourshitdone.model.Category;
 
 import java.util.ArrayList;
 import java.util.Date;
