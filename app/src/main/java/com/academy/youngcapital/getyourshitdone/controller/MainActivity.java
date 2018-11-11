@@ -28,46 +28,48 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    // data/tasks.class
+    private Tasks dataTasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dataTasks = new Tasks();
 
         // TEST data //
-        Tasks alltasks = new Tasks();
         Category cat = new Category("TestCategorie", "blue");
+        dataTasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat, null);
+        dataTasks.createTask("Tasknumero2", "Nog een task", 0, cat, null);
+        // END Test data //
 
-        alltasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat);
-        alltasks.createTask("Tasknumero2", "Nog een task", 0, cat);
-
-        //saveTasks(alltasks.getAllTasks());
         getTasks();
 
     }
 
     private void getTasks() {
+
+        // shared pref
         SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
         Gson gson = new Gson();
+
+        // data ophalen uit file
         String json =  sharedPreferences.getString("task list", null);
-
         Type type = new TypeToken<ArrayList<Task>>() {}.getType();
-
         ArrayList<Task> testList = new ArrayList<>();
         testList = gson.fromJson(json, type);
 
-        // output testen
-        String finall = "";
-
+        // loop door alle tasks en toevoegen aan listview and data class
         for(Task item : testList)
         {
-            finall = finall + item.getTitle();
-        }
+            dataTasks.createTask(item);
 
-        Toast.makeText(getApplicationContext(), finall, Toast.LENGTH_LONG).show();
+            // Code om tasks in listview zetten moet hier
+        }
     }
 
-    private void saveTasks(ArrayList<Task> allTasks) {
+    private void saveTasks() {
 
         // Sharedpref opzetten
         SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
@@ -75,12 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Object serialization
         Gson gson = new Gson();
-        String json = gson.toJson(allTasks);
+        String json = gson.toJson(dataTasks.getAllTasks());
 
         // In bestand opslaan
         editor.putString("task list",   json);
         editor.apply();
 
+        // Kan weg na test
         Toast.makeText(getApplicationContext(), "Data opgeslagen", Toast.LENGTH_LONG).show();
     }
 

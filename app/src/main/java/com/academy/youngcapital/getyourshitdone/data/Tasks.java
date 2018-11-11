@@ -16,10 +16,12 @@ public class Tasks {
         this.allTasks.add(new Task(title, description, priority, category, attachments));
     }
 
-    // Method overloading - Geen attachment
-    public void createTask(String title, String description, int priority, Category category) {
-        this.allTasks.add(new Task(title, description, priority, category, null));
+    // Method overloading - Voor direct task toevoegen
+    public void createTask(Task addableTask)
+    {
+        this.allTasks.add(addableTask);
     }
+
 
     public ArrayList<String> getItems() {
         ArrayList<String> list = new ArrayList<>();
