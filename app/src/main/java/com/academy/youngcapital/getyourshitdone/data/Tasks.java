@@ -12,8 +12,13 @@ public class Tasks {
 
     private ArrayList<Task> allTasks = new ArrayList<>();
 
-    public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments, Date date) {
-            this.allTasks.add(new Task(title, description, priority, category, attachments, date));
+    public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+        this.allTasks.add(new Task(title, description, priority, category, attachments));
+    }
+
+    // Method overloading - Geen attachment
+    public void createTask(String title, String description, int priority, Category category) {
+        this.allTasks.add(new Task(title, description, priority, category, null));
     }
 
     public ArrayList<String> getItems() {
@@ -23,4 +28,9 @@ public class Tasks {
         }
         return list;
     }
+
+    public ArrayList<Task> getAllTasks() {
+        return this.allTasks;
+    }
+
 }

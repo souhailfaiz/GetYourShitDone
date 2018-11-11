@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
+import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,7 +34,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        // TEST data //
+        Tasks alltasks = new Tasks();
+        Category cat = new Category("TestCategorie", "blue");
+
+        alltasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat);
+        alltasks.createTask("Tasknumero2", "Nog een task", 0, cat);
+
+        //saveTasks(alltasks.getAllTasks());
         getTasks();
+
     }
 
     private void getTasks() {
@@ -41,28 +51,23 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json =  sharedPreferences.getString("task list", null);
 
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Task>>() {}.getType();
 
-        ArrayList testList = new ArrayList<>();
+        ArrayList<Task> testList = new ArrayList<>();
         testList = gson.fromJson(json, type);
 
         // output testen
         String finall = "";
 
-        for (int i = 0; i < testList.size(); i++) {
-            finall = finall + testList.get(i);
+        for(Task item : testList)
+        {
+            finall = finall + item.getTitle();
         }
 
         Toast.makeText(getApplicationContext(), finall, Toast.LENGTH_LONG).show();
     }
 
-    private void saveTasks() {
-        // Test string array
-        ArrayList<String> allTasks = new ArrayList();
-        allTasks.add("task1");
-        allTasks.add("  - task 2");
-        allTasks.add(" - task 3");
-
+    private void saveTasks(ArrayList<Task> allTasks) {
 
         // Sharedpref opzetten
         SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
