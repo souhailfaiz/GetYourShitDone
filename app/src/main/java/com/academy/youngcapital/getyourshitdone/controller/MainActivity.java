@@ -1,7 +1,9 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,9 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
+import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +31,55 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        getTasks();
     }
+
+    private void getTasks() {
+        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json =  sharedPreferences.getString("task list", null);
+
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+
+        ArrayList testList = new ArrayList<>();
+        testList = gson.fromJson(json, type);
+
+        // output testen
+        String finall = "";
+
+        for (int i = 0; i < testList.size(); i++) {
+            finall = finall + testList.get(i);
+        }
+
+        Toast.makeText(getApplicationContext(), finall, Toast.LENGTH_LONG).show();
+    }
+
+    private void saveTasks() {
+        // Test string array
+        ArrayList<String> allTasks = new ArrayList();
+        allTasks.add("task1");
+        allTasks.add("  - task 2");
+        allTasks.add(" - task 3");
+
+
+        // Sharedpref opzetten
+        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Object serialization
+        Gson gson = new Gson();
+        String json = gson.toJson(allTasks);
+
+        // In bestand opslaan
+        editor.putString("task list",   json);
+        editor.apply();
+
+        Toast.makeText(getApplicationContext(), "Data opgeslagen", Toast.LENGTH_LONG).show();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
