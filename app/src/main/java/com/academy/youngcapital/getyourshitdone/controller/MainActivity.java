@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,9 +45,14 @@ public class MainActivity extends AppCompatActivity {
     // data/tasks.class
     private Tasks dataTasks;
 
+    ArrayList<Category> allCategories = new ArrayList<>();
+    Category cat = new Category("Test1", "blue");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        allCategories.add(cat);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+        Menu menu = navView.getMenu();
+
+
+        for (Category num : allCategories) {
+            menu.add(R.id.navmenu, num.getNum(), Menu.NONE, num.getTitle());
+        }
 
         dataTasks = new Tasks(getApplicationContext());
 
@@ -69,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         LinearLayout layout = new LinearLayout(this);
@@ -76,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         switch (item.getItemId()) {
+
+
             case R.id.action_add_task:
                 layout.setOrientation(LinearLayout.VERTICAL);
                 final EditText taskEditText11 = new EditText(this);
@@ -101,15 +118,17 @@ public class MainActivity extends AppCompatActivity {
                         .create();
                 dialog.show();
                 return true;
+            case 5060:
+                Log.d(TAG, "Category to addfSDfdsfa: ");
+
+            case R.id.categoryMenuId:
             case R.id.action_add_category:
                 layout.setOrientation(LinearLayout.VERTICAL);
                 final EditText taskEditText1 = new EditText(this);
                 final EditText taskEditText2 = new EditText(this);
                 layout.addView(taskEditText1);
                 taskEditText1.setHint("Category name");
-                ;
                 taskEditText2.setHint("Category Color");
-                ;
                 layout.addView(taskEditText2);
                 AlertDialog dialog1 = new AlertDialog.Builder(this)
                         .setTitle("Add a new Category")
@@ -119,9 +138,12 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 String categoryName = String.valueOf(taskEditText1.getText());
                                 String categoryColor = String.valueOf(taskEditText2.getText());
-
-                                Category category = new Category(categoryName, categoryColor);
-                                Log.d(TAG, "Category to add: " + category.getColor() + category.getTitle());
+                                Category cat = new Category(categoryName, categoryColor);
+                                allCategories.add(cat);
+                                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                                Menu menu = navView.getMenu();
+                                menu.add(R.id.navmenu, cat.getNum(), Menu.NONE, cat.getTitle());
+                                Log.d(TAG, "fasdfasd"+allCategories.toString());
                             }
                         })
                         .setNegativeButton("Cancel", null)
