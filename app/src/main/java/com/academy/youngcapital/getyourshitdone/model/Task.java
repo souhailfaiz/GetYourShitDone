@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Task {
+    private int id;
     private String title;
     private String description;
 
@@ -20,7 +21,8 @@ public class Task {
     private boolean isCompleted;
     private Date date;
 
-    public Task(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+    public Task(int id, String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+        this.id = id;
         this.title = title;
         this.description = description;
 
@@ -31,6 +33,14 @@ public class Task {
         this.isCompleted = false;
 
         setDate();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle(){

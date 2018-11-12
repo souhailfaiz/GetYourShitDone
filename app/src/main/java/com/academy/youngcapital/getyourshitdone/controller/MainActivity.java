@@ -9,14 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
+import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,20 +35,36 @@ public class MainActivity extends AppCompatActivity {
     // data/tasks.class
     private Tasks dataTasks;
 
+    private ListView listView;
+    private ListAdapter listAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listView = (ListView)findViewById(R.id.list_tasks);
+
         dataTasks = new Tasks();
 
         // TEST data //
         Category cat = new Category("TestCategorie", "blue");
-        dataTasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat, null);
-        dataTasks.createTask("Tasknumero2", "Nog een task", 0, cat, null);
+        dataTasks.createTask(1, "School Project", "Schoolprojecte nog afmaken", 0, cat, null);
+        dataTasks.createTask(2, "Tasknumero2", "Nog een task", 0, cat, null);
         // END Test data //
 
+        saveTasks();
         getTasks();
+
+        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+        listView.setAdapter(listAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "Clicked task id = " + view.getTag(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
