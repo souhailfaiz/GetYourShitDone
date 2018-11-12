@@ -1,7 +1,9 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,10 +12,19 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import android.widget.Spinner;
 import com.academy.youngcapital.getyourshitdone.R;
+import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
+import com.academy.youngcapital.getyourshitdone.model.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +33,66 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    // data/tasks.class
+    private Tasks dataTasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dataTasks = new Tasks();
+
+        // TEST data //
+        Category cat = new Category("TestCategorie", "blue");
+        dataTasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat, null);
+        dataTasks.createTask("Tasknumero2", "Nog een task", 0, cat, null);
+        // END Test data //
+
+        getTasks();
+
     }
+
+    private void getTasks() {
+
+        // shared pref
+        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        // data ophalen uit file
+        String json =  sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<Task>>() {}.getType();
+        ArrayList<Task> testList = new ArrayList<>();
+        testList = gson.fromJson(json, type);
+
+        // loop door alle tasks en toevoegen aan listview and data class
+        for(Task item : testList)
+        {
+            dataTasks.createTask(item);
+
+            // Code om tasks in listview zetten moet hier
+        }
+    }
+
+    private void saveTasks() {
+
+        // Sharedpref opzetten
+        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Object serialization
+        Gson gson = new Gson();
+        String json = gson.toJson(dataTasks.getAllTasks());
+
+        // In bestand opslaan
+        editor.putString("task list",   json);
+        editor.apply();
+
+        // Kan weg na test
+        Toast.makeText(getApplicationContext(), "Data opgeslagen", Toast.LENGTH_LONG).show();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
