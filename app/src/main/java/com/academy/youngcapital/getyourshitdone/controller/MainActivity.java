@@ -1,5 +1,7 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,55 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dataTasks = new Tasks();
+        dataTasks = new Tasks(getApplicationContext());
 
-        // TEST data //
-        Category cat = new Category("TestCategorie", "blue");
-        dataTasks.createTask("School Project", "Schoolprojecte nog afmaken", 0, cat, null);
-        dataTasks.createTask("Tasknumero2", "Nog een task", 0, cat, null);
-        // END Test data //
-
-//        getTasks();
-
-    }
-
-    private void getTasks() {
-
-        // shared pref
-        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
-        Gson gson = new Gson();
-
-        // data ophalen uit file
-        String json = sharedPreferences.getString("task list", null);
-        Type type = new TypeToken<ArrayList<Task>>() {
-        }.getType();
-        ArrayList<Task> testList = new ArrayList<>();
-        testList = gson.fromJson(json, type);
-
-        // loop door alle tasks en toevoegen aan listview and data class
-        for (Task item : testList) {
-            dataTasks.createTask(item);
-
-            // Code om tasks in listview zetten moet hier
-        }
-    }
-
-    private void saveTasks() {
-
-        // Sharedpref opzetten
-        SharedPreferences sharedPreferences = getSharedPreferences("tasksStorage", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        // Object serialization
-        Gson gson = new Gson();
-        String json = gson.toJson(dataTasks.getAllTasks());
-
-        // In bestand opslaan
-        editor.putString("task list", json);
-        editor.apply();
-
-        // Kan weg na test
-        Toast.makeText(getApplicationContext(), "Data opgeslagen", Toast.LENGTH_LONG).show();
     }
 
 
