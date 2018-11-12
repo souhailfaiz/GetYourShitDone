@@ -35,7 +35,7 @@ public class Task {
 
         setDate();
     }
-    
+
     public int getId() {
         return id;
     }
