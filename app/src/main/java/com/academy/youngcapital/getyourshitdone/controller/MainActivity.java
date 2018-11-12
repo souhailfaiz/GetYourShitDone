@@ -7,11 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import android.widget.Spinner;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.model.Category;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,13 +39,12 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         switch (item.getItemId()) {
             case R.id.action_add_task:
-
                 layout.setOrientation(LinearLayout.VERTICAL);
                 final EditText taskEditText11 = new EditText(this);
                 final EditText taskEditText21 = new EditText(this);
                 layout.addView(taskEditText11);
-                taskEditText11.setHint("Task title");;
-                taskEditText21.setHint("Task Description");;
+                taskEditText11.setHint("Task title");
+                taskEditText21.setHint("Task Description");
                 layout.addView(taskEditText21);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new Task")

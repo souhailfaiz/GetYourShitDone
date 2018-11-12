@@ -25,8 +25,9 @@ public class Task {
         this.attachments = attachments;
 
         this.priority = priority;
-        this.isCompleted = false;
+
         this.date = date;
+        this.isCompleted = false;
     }
 
     public String getTitle(){
