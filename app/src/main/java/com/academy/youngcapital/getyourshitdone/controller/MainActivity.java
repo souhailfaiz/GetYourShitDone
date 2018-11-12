@@ -1,12 +1,7 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,23 +13,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import android.widget.Spinner;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
-import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -97,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         getMenuInflater().inflate(R.menu.nav_menu_layout, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    public void onSizeGroupItemClick(MenuItem item) {
-        addCategoryView();
     }
 
     public boolean addCategoryView() {
