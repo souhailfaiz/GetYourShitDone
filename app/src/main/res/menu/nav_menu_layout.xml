@@ -11,6 +11,11 @@
         />
 
         <item
+                android:id="@+id/addcategory"
+                android:title="Add Category"
+
+        />
+        <item
                 android:id="@+id/categoryMenuId"
                 android:title="All Categories"
         />

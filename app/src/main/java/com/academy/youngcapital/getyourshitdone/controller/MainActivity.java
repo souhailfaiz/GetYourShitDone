@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dataTasks = new Tasks(getApplicationContext());
+        dataTasks.createCategory(new Category("School", "blue"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -66,33 +68,79 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
         Menu menu = navView.getMenu();
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.addcategory:
+                        addCategoryView();
+                }
+
+                return true;
+            }
+        });
 
         for (Category num : dataTasks.getAllCategories()) {
-            menu.add(R.id.navmenu, num.getNum(), Menu.NONE, num.getTitle());
-        }
 
+            menu.add(0, 123, 0, num.getTitle());
+        }
 
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.nav_menu_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void onSizeGroupItemClick(MenuItem item) {
+        addCategoryView();
+    }
+
+    public boolean addCategoryView() {
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        final EditText taskEditText1 = new EditText(this);
+        final EditText taskEditText2 = new EditText(this);
+        layout.addView(taskEditText1);
+        taskEditText1.setHint("Category name");
+        taskEditText2.setHint("Category Color");
+        layout.addView(taskEditText2);
+        AlertDialog dialog1 = new AlertDialog.Builder(this)
+                .setTitle("Add a new Category")
+                .setView(layout)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String categoryName = String.valueOf(taskEditText1.getText());
+                        String categoryColor = String.valueOf(taskEditText2.getText());
+                        Category cat = new Category(categoryName, categoryColor);
+                        getDataTasks().createCategory(cat);
+                        NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                        Menu menu = navView.getMenu();
+                        menu.add(R.id.navmenu, cat.getNum(), Menu.NONE, cat.getTitle());
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog1.show();
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        LinearLayout layout = new LinearLayout(this);
+
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        Log.d(TAG, ""+item.getItemId());
         switch (item.getItemId()) {
 
 
             case R.id.action_add_task:
+                LinearLayout layout = new LinearLayout(this);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 final EditText taskEditText11 = new EditText(this);
                 final EditText taskEditText21 = new EditText(this);
@@ -117,37 +165,13 @@ public class MainActivity extends AppCompatActivity {
                         .create();
                 dialog.show();
                 return true;
-            case 5060:
+            case 123:
                 Log.d(TAG, "Category to addfSDfdsfa: ");
-
+                return true;
             case R.id.categoryMenuId:
             case R.id.action_add_category:
-                layout.setOrientation(LinearLayout.VERTICAL);
-                final EditText taskEditText1 = new EditText(this);
-                final EditText taskEditText2 = new EditText(this);
-                layout.addView(taskEditText1);
-                taskEditText1.setHint("Category name");
-                taskEditText2.setHint("Category Color");
-                layout.addView(taskEditText2);
-                AlertDialog dialog1 = new AlertDialog.Builder(this)
-                        .setTitle("Add a new Category")
-                        .setView(layout)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String categoryName = String.valueOf(taskEditText1.getText());
-                                String categoryColor = String.valueOf(taskEditText2.getText());
-                                Category cat = new Category(categoryName, categoryColor);
-                                getDataTasks().createCategory(cat);
-                                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
-                                Menu menu = navView.getMenu();
-                                menu.add(R.id.navmenu, cat.getNum(), Menu.NONE, cat.getTitle());
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .create();
-                dialog1.show();
-                return true;
+                addCategoryView();
+
 
             default:
                 return super.onOptionsItemSelected(item);
