@@ -10,13 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-<<<<<<< HEAD
 import android.view.View;
 import android.widget.AdapterView;
 import android.view.SubMenu;
 import android.widget.ArrayAdapter;
-=======
->>>>>>> 0e83780ae107a3fbded07a1f858180097734c8bf
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.list_tasks);
 
-        dataTasks = new Tasks();
+        dataTasks = new Tasks(getApplicationContext());
 
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
         listView.setAdapter(listAdapter);
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.addcategory:
                         addCategoryView();
                 }
-                returtn true;
+                return true;
             }
         });
 
