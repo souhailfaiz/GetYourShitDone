@@ -15,13 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-<<<<<<< HEAD
-import android.view.View;
-import android.widget.AdapterView;
-=======
-import android.view.SubMenu;
-import android.widget.ArrayAdapter;
->>>>>>> 75602804ddc076b78cd6d269e899779f2750356c
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -53,14 +46,12 @@ public class MainActivity extends AppCompatActivity {
     // data/tasks.class
     private Tasks dataTasks;
 
-<<<<<<< HEAD
     private ListView listView;
     private ListAdapter listAdapter;
-=======
+
     public Tasks getDataTasks() {
         return dataTasks;
     }
->>>>>>> 75602804ddc076b78cd6d269e899779f2750356c
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,32 +61,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-<<<<<<< HEAD
-        listView = (ListView)findViewById(R.id.list_tasks);
-
-        dataTasks = new Tasks();
-
-        // TEST data //
-        Category cat = new Category("TestCategorie", "blue");
-        dataTasks.createTask(1, "School Project", "Schoolprojecte nog afmaken", 0, cat, null);
-        dataTasks.createTask(2, "Tasknumero2", "Nog een task", 0, cat, null);
-        // END Test data //
-
-        saveTasks();
-        getTasks();
-
-        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
-        listView.setAdapter(listAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Clicked task id = " + view.getTag(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-=======
         drawerLayout = findViewById(R.id.drawerId);
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
@@ -113,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.addcategory:
                         addCategoryView();
                 }
->>>>>>> 75602804ddc076b78cd6d269e899779f2750356c
 
                 return true;
             }
