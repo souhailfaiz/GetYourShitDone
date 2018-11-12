@@ -72,20 +72,23 @@ public class Tasks {
 
     public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
         this.allTasks.add(new Task(title, description, priority, category, attachments));
+        this.saveTasks();
     }
 
     // Method overloading - Voor direct task toevoegen
     public void createTask(Task addableTask)
     {
         this.allTasks.add(addableTask);
+        this.saveTasks();
     }
 
     public void createCategory(String name, String kleur)
     {
         this.allCategories.add(new Category(name,kleur));
+        this.saveCategories();
     }
 
-    public void createCategory(Category cat){ this.allCategories.add(cat); }
+    public void createCategory(Category cat){ this.allCategories.add(cat); this.saveCategories(); }
 
     public ArrayList<String> getItems() {
         ArrayList<String> list = new ArrayList<>();
