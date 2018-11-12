@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
     // data/tasks.class
     private Tasks dataTasks;
 
-    ArrayList<Category> allCategories = new ArrayList<>();
-    Category cat = new Category("Test1", "blue");
+    public Tasks getDataTasks() {
+        return dataTasks;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        allCategories.add(cat);
+        dataTasks = new Tasks(getApplicationContext());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -67,15 +67,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
         Menu menu = navView.getMenu();
 
-
-        for (Category num : allCategories) {
+        for (Category num : dataTasks.getAllCategories()) {
             menu.add(R.id.navmenu, num.getNum(), Menu.NONE, num.getTitle());
         }
 
-        dataTasks = new Tasks(getApplicationContext());
+
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
+        Log.d(TAG, ""+item.getItemId());
         switch (item.getItemId()) {
 
 
@@ -139,11 +138,10 @@ public class MainActivity extends AppCompatActivity {
                                 String categoryName = String.valueOf(taskEditText1.getText());
                                 String categoryColor = String.valueOf(taskEditText2.getText());
                                 Category cat = new Category(categoryName, categoryColor);
-                                allCategories.add(cat);
+                                getDataTasks().createCategory(cat);
                                 NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                                 Menu menu = navView.getMenu();
                                 menu.add(R.id.navmenu, cat.getNum(), Menu.NONE, cat.getTitle());
-                                Log.d(TAG, "fasdfasd"+allCategories.toString());
                             }
                         })
                         .setNegativeButton("Cancel", null)
