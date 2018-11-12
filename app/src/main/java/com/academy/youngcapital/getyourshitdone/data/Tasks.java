@@ -70,8 +70,10 @@ public class Tasks {
         }
     }
 
-    public void createTask(int id, String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
-        this.allTasks.add(new Task(id, title, description, priority, category, attachments));
+
+    public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+        this.allTasks.add(new Task(1, title, description, priority, category, attachments));
+
         this.saveTasks();
     }
 
