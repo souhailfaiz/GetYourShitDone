@@ -2,24 +2,17 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="120dp"
     android:background="#FF8C00"
     android:orientation="vertical"
     android:padding="10dp"
     >
 
     <ImageView
-        android:src="@mipmap/youngcapital"
+        android:src="@mipmap/logo"
         android:layout_width="80dp"
         android:layout_height="100dp"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get Your Shit Done:"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:paddingTop="8dp"
-        />
+
 
 </LinearLayout>
