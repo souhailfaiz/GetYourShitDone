@@ -34,53 +34,51 @@ public class Task {
         setDate();
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
 
-    public Category getCategory(){
+    public Category getCategory() {
         return this.category;
     }
 
-    public int getPriority(){
+    public int getPriority() {
         return this.priority;
     }
 
-    public boolean isCompleted(){
+    public boolean isCompleted() {
         return this.isCompleted;
     }
 
-    public Date getDate(){
+    public Date getDate() {
         return this.date;
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setPriority(int priority){
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public void setCategory(Category category){
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public void setIsCompleted(boolean isCompleted)
-    {
+    public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
 
-    private void setDate()
-    {
+    private void setDate() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         this.date = date;

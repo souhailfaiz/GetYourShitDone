@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerId);
 
-        toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.nav_open,R.string.nav_close);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         dataTasks.createTask("Tasknumero2", "Nog een task", 0, cat, null);
         // END Test data //
 
-        getTasks();
+//        getTasks();
 
     }
 
@@ -75,14 +75,14 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
 
         // data ophalen uit file
-        String json =  sharedPreferences.getString("task list", null);
-        Type type = new TypeToken<ArrayList<Task>>() {}.getType();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<Task>>() {
+        }.getType();
         ArrayList<Task> testList = new ArrayList<>();
         testList = gson.fromJson(json, type);
 
         // loop door alle tasks en toevoegen aan listview and data class
-        for(Task item : testList)
-        {
+        for (Task item : testList) {
             dataTasks.createTask(item);
 
             // Code om tasks in listview zetten moet hier
@@ -100,13 +100,12 @@ public class MainActivity extends AppCompatActivity {
         String json = gson.toJson(dataTasks.getAllTasks());
 
         // In bestand opslaan
-        editor.putString("task list",   json);
+        editor.putString("task list", json);
         editor.apply();
 
         // Kan weg na test
         Toast.makeText(getApplicationContext(), "Data opgeslagen", Toast.LENGTH_LONG).show();
     }
-
 
 
     @Override
@@ -118,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         LinearLayout layout = new LinearLayout(this);
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 layout.setOrientation(LinearLayout.VERTICAL);
@@ -137,21 +139,22 @@ public class MainActivity extends AppCompatActivity {
                                 String categoryColor = String.valueOf(taskEditText21.getText());
 
                                 Category category = new Category(categoryName, categoryColor);
-                                Log.d(TAG, "Category to add: " + category.getColor()+ category.getTitle());
+                                Log.d(TAG, "Category to add: " + category.getColor() + category.getTitle());
                             }
                         })
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
                 return true;
-
             case R.id.action_add_category:
                 layout.setOrientation(LinearLayout.VERTICAL);
                 final EditText taskEditText1 = new EditText(this);
                 final EditText taskEditText2 = new EditText(this);
                 layout.addView(taskEditText1);
-                taskEditText1.setHint("Category name");;
-                taskEditText2.setHint("Category Color");;
+                taskEditText1.setHint("Category name");
+                ;
+                taskEditText2.setHint("Category Color");
+                ;
                 layout.addView(taskEditText2);
                 AlertDialog dialog1 = new AlertDialog.Builder(this)
                         .setTitle("Add a new Category")
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                                 String categoryColor = String.valueOf(taskEditText2.getText());
 
                                 Category category = new Category(categoryName, categoryColor);
-                                Log.d(TAG, "Category to add: " + category.getColor()+ category.getTitle());
+                                Log.d(TAG, "Category to add: " + category.getColor() + category.getTitle());
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -176,12 +179,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public boolean onOptionsItemSelectedAmin(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item))
-
-            return true;
-
-        return super.onOptionsItemSelected(item);
-    }
 }
