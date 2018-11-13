@@ -31,7 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="88dp"
-        android:text="Aanmaken" />
+        android:text="Wijzigingen opslaan" />
 
     <Button
         android:id="@+id/button2"

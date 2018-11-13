@@ -14,6 +14,8 @@ import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 
+import java.util.HashMap;
+
 public class EditActivity extends Activity {
 
     private Tasks dataTasks;
@@ -47,6 +49,9 @@ public class EditActivity extends Activity {
 
         editTitle.setText(currentTask.getTitle());
         editNotes.setText(currentTask.getDescription());
+        // switchPriority
+
+
 
 
     }
