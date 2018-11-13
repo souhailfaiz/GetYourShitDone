@@ -1,6 +1,7 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final
     String TAG = "MainActivity";
+    public static final String MESSAGE = "com.example.SIMPLE_MESSAGE";
 
     // data/tasks.class
     private Tasks dataTasks;
@@ -65,10 +67,15 @@ public class MainActivity extends AppCompatActivity {
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
         listView.setAdapter(listAdapter);
 
+        final Intent i = new Intent(this, EditActivity.class);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Clicked task id = " + view.getTag(), Toast.LENGTH_SHORT).show();
+
+                int taskID = Integer.parseInt(view.getTag().toString());
+                i.putExtra("task_id", taskID);
+                startActivity(i);
             }
         });
 
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         simpleSwitch.setText("Priority");
 
 
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Task")
                 .setView(layout)
@@ -168,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+
     }
 
     @Override
@@ -199,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                         String categoryColor = String.valueOf(taskEditText2.getText());
 
                         Category cat = new Category(randomid, categoryName, categoryColor);
-                        getDataTasks().createCategory(cat);
+                        //getDataTasks().createCategory(cat);
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
                         menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());
