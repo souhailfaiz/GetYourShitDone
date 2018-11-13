@@ -1,18 +1,21 @@
 package com.academy.youngcapital.getyourshitdone.model;
 
 public class Category{
-    private int num;
+    private int id;
     private String title;
     private String color;
 
-    public Category(String title, String color) {
+    public Category(int id, String title, String color) {
+        this.id = id;
         this.title = title;
         this.color = color;
-        this.num +=1;
+
     }
 
-    public int getNum(){
-        return this.num;
+
+
+    public int getId(){
+        return this.id;
     }
 
     public String getTitle(){

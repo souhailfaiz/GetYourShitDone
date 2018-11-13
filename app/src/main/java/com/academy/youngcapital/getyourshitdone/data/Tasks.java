@@ -23,8 +23,8 @@ public class Tasks {
 
     private Context context;
 
-    public Tasks(Context context)
-    {
+
+    public Tasks(Context context) {
         // Set context & Wrapper
         this.context = context;
 
@@ -43,7 +43,7 @@ public class Tasks {
         testList = gson.fromJson(json, type);
 
         // Loop door json objects en in arrayList zetten
-        if(testList != null) {
+        if (testList != null) {
             for (Task item : testList) {
                 this.createTask(item);
                 Log.d("MainActivity", item.getTitle());
@@ -63,7 +63,7 @@ public class Tasks {
         testList2 = gson.fromJson(json, type);
 
         // loop door alle categoriene en toevoegen aan menu
-        if(testList2 != null) {
+        if (testList2 != null) {
             for (Category item : testList2) {
                 this.createCategory(item);
             }
@@ -72,25 +72,27 @@ public class Tasks {
 
 
     public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+
         this.allTasks.add(new Task(1, title, description, priority, category, attachments));
 
         this.saveTasks();
     }
 
     // Method overloading - Voor direct task toevoegen
-    public void createTask(Task addableTask)
-    {
+    public void createTask(Task addableTask) {
         this.allTasks.add(addableTask);
         this.saveTasks();
     }
 
-    public void createCategory(String name, String kleur)
-    {
-        this.allCategories.add(new Category(name,kleur));
+    public void createCategory(String name, String kleur) {
+        this.allCategories.add(new Category(1, name, kleur));
         this.saveCategories();
     }
 
-    public void createCategory(Category cat){ this.allCategories.add(cat); this.saveCategories(); }
+    public void createCategory(Category cat) {
+        this.allCategories.add(cat);
+        this.saveCategories();
+    }
 
     public ArrayList<String> getItems() {
         ArrayList<String> list = new ArrayList<>();
@@ -98,6 +100,25 @@ public class Tasks {
             list.add(item.getTitle());
         }
         return list;
+    }
+
+    public ArrayList<Task> getTasksByCategory(int category) {
+        ArrayList<Task> filteredTasks = new ArrayList<>();
+        for (Task item : this.getAllTasks()) {
+            if (item.getCategory().getId() == category) {
+                filteredTasks.add(item);
+            }
+        }
+        return filteredTasks;
+    }
+
+    public boolean categoryIdExists(int id) {
+        for (Category category : this.getAllCategories()) {
+            if (category.getId() != id) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public ArrayList<Task> getAllTasks() {
@@ -122,9 +143,16 @@ public class Tasks {
         editor.putString("task list", json);
         editor.apply();
     }
+    public Category getCategoryByName(String name){
+        for(Category category : this.getAllCategories()){
+            if(category.getTitle().contains(name)){
+                return category;
+            }
+        }
+        return null;
+    }
 
-    public void saveCategories()
-    {
+    public void saveCategories() {
         // Sharedpref opzetten
         SharedPreferences sharedPreferences = this.context.getSharedPreferences("catStorage", this.context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
