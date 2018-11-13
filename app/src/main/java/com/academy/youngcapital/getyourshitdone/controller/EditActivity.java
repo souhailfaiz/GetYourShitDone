@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,9 +16,11 @@ import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
+import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditActivity extends Activity {
@@ -59,10 +62,15 @@ public class EditActivity extends Activity {
         switchPriority.setChecked(currentTask.getPriority());
         checkFinished.setChecked(currentTask.isCompleted());
 
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        for (Category category : dataTasks.getAllCategories()) {
+            spinnerArray.add(category.getTitle());
+        }
 
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spinnerCategory.setAdapter(spinnerArrayAdapter);
 
         // delete knop
-
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
