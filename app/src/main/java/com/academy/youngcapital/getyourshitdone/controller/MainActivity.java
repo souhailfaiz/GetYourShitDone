@@ -2,6 +2,7 @@ package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Tasks dataTasks;
     private ListView listView;
     private ListAdapter listAdapter;
+    private FloatingActionButton fab;
 
     public Tasks getDataTasks() {
         return dataTasks;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = (ListView)findViewById(R.id.list_tasks);
-
+        fab = findViewById(R.id.fab);
         dataTasks = new Tasks(getApplicationContext());
 
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
@@ -88,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
             menu.add(0, 123, 0, num.getTitle());
         }
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Clicked add task", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -8,11 +8,29 @@
     tools:openDrawer="start"
     tools:context=".controller.MainActivity">
 
-    <ListView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
             android:id="@+id/list_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-    </ListView>
+            android:layout_height="wrap_content"
+            app:fabSize="normal"
+            android:layout_gravity="end|bottom"
+            app:backgroundTint="@color/colorYC"
+            android:src="@drawable/ic_add_black_48dp"
+            android:layout_margin="30dp" />
+    </FrameLayout>
+
+
+
 
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
