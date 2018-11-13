@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,9 +21,11 @@ import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
+import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditActivity extends AppCompatActivity {
@@ -35,7 +38,8 @@ public class EditActivity extends AppCompatActivity {
     private Switch switchPriority;
     private Spinner spinnerCategory;
     private CheckBox checkFinished;
-
+    private ArrayAdapter<String> spinnerArrayAdapter;
+    private ArrayList<String> spinnerArray;
     private Button deleteButton;
 
     @SuppressLint("A.K.A. JUNAID A NIFFFFFOOOO")
@@ -74,6 +78,8 @@ public class EditActivity extends AppCompatActivity {
         editNotes.setText(currentTask.getDescription());
         switchPriority.setChecked(currentTask.getPriority());
         checkFinished.setChecked(currentTask.isCompleted());
+        spinnerCategory.setAdapter(spinnerArrayAdapter);
+
     }
 
     //initialize all view variables needed
@@ -86,21 +92,15 @@ public class EditActivity extends AppCompatActivity {
         checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
         deleteButton = (Button)findViewById(R.id.btnDelete);
         currentTask = dataTasks.getTaskById(task_id);
+        spinnerArray = new ArrayList<String>();
 
-        // delete knop
+        //Add all categories to spinnerArray
+        for (Category category : dataTasks.getAllCategories()) {
+            spinnerArray.add(category.getTitle());
+        }
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dataTasks.deleteTask(currentTask.getId());
-
-                ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
-                MainActivity.listView.setAdapter(listAdapter);
-
-                onBackPressed();
-
-            }
-        });
+        //set spinner adapter
+        spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
     }
 
     //get data from previous screen
