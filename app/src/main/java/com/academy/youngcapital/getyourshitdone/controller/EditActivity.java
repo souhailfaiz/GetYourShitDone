@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ShareActionProvider;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
+import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
 import java.util.HashMap;
 
@@ -32,9 +36,7 @@ public class EditActivity extends AppCompatActivity {
     private Spinner spinnerCategory;
     private CheckBox checkFinished;
 
-
-
-
+    private Button deleteButton;
 
     @SuppressLint("A.K.A. JUNAID A NIFFFFFOOOO")
     @Override
@@ -50,12 +52,28 @@ public class EditActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setView();
+
+        // delete knop
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataTasks.deleteTask(currentTask.getId());
+
+                ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+                MainActivity.listView.setAdapter(listAdapter);
+
+                onBackPressed();
+
+            }
+        });
     }
 
     //set the view values
     private void setView() {
         editTitle.setText(currentTask.getTitle());
         editNotes.setText(currentTask.getDescription());
+        switchPriority.setChecked(currentTask.getPriority());
+        checkFinished.setChecked(currentTask.isCompleted());
     }
 
     //initialize all view variables needed
@@ -66,7 +84,23 @@ public class EditActivity extends AppCompatActivity {
         switchPriority = (Switch)findViewById(R.id.editPriority);
         spinnerCategory = (Spinner)findViewById(R.id.editCat);
         checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
+        deleteButton = (Button)findViewById(R.id.btnDelete);
         currentTask = dataTasks.getTaskById(task_id);
+
+        // delete knop
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataTasks.deleteTask(currentTask.getId());
+
+                ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+                MainActivity.listView.setAdapter(listAdapter);
+
+                onBackPressed();
+
+            }
+        });
     }
 
     //get data from previous screen
