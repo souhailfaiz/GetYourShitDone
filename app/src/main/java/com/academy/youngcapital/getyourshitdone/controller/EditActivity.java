@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -49,9 +50,9 @@ public class EditActivity extends Activity {
 
         editTitle.setText(currentTask.getTitle());
         editNotes.setText(currentTask.getDescription());
-        // switchPriority
 
-
+        switchPriority.setChecked(currentTask.getPriority());
+        checkFinished.setChecked(currentTask.isCompleted());
 
 
     }
