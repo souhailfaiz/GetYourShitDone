@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.academy.youngcapital.getyourshitdone.controller.MainActivity;
 import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
@@ -70,6 +71,22 @@ public class Tasks implements Serializable {
                 this.createCategory(item);
             }
         }
+
+    }
+
+    public void deleteTask(int id)
+    {
+        for(Task item : allTasks)
+        {
+            if(item.getId() == id)
+            {
+                allTasks.remove(item);
+                saveTasks();
+
+            }
+        }
+
+
 
     }
 
