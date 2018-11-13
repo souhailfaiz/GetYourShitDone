@@ -71,10 +71,6 @@ public class Tasks implements Serializable {
             }
         }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     }
 
     private int getNewID()
@@ -91,11 +87,8 @@ public class Tasks implements Serializable {
 
     public void createTask(int id, String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
 
-<<<<<<< Updated upstream
         this.allTasks.add(new Task(getNewID(), title, description, priority, category, attachments));
-=======
         this.allTasks.add(new Task(id, title, description, priority, category, attachments));
->>>>>>> Stashed changes
 
         this.saveTasks();
     }
@@ -167,15 +160,9 @@ public class Tasks implements Serializable {
         editor.apply();
     }
 
-<<<<<<< Updated upstream
     public Category getCategoryByName(String name){
         for(Category category : this.getAllCategories()){
             if(category.getTitle().contains(name)){
-=======
-    public Category getCategoryByName(String name) {
-        for (Category category : this.getAllCategories()) {
-            if (category.getTitle().contains(name)) {
->>>>>>> Stashed changes
                 return category;
             }
         }

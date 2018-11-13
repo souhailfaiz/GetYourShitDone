@@ -227,5 +227,11 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         dialog1.show();
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return true;
+    }
 }
