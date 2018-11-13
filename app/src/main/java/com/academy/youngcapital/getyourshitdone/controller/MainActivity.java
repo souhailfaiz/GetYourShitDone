@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.addcategory:
-                        addCategoryView();
+                        showaddCategoryDialog();
                     case R.id.allcategories:
                         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                         listView.setAdapter(listAdapter);
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void addCategoryView() {
+    public void showaddCategoryDialog() {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         final EditText taskEditText1 = new EditText(this);
@@ -217,28 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog1.show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        switch (item.getItemId()) {
-            case 4:
-
-                return true;
-            case 123:
-                Log.d(TAG, "Category to addfSDfdsfa: ");
-                return true;
-            case R.id.addcategory:
-                addCategoryView();
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
 }
