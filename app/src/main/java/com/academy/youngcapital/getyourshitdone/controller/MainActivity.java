@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     // data/tasks.class
     private Tasks dataTasks;
-    private ListView listView;
-    private ListAdapter listAdapter;
+    public static ListView listView;
+    private  ListAdapter listAdapter;
     private FloatingActionButton fab;
 
     public Tasks getDataTasks() {
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(listAdapter);
 
         final Intent i = new Intent(this, EditActivity.class);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     public void showAddTaskDialog(View view) {
         LinearLayout layout = new LinearLayout(this);
