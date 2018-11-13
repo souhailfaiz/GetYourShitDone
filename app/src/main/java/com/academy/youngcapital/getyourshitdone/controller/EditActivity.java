@@ -89,6 +89,8 @@ public class EditActivity extends AppCompatActivity {
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                 MainActivity.listView.setAdapter(listAdapter);
 
+                dataTasks.saveTasks();
+
                 onBackPressed();
 
                 Log.d("Editor:", "Opgeslagen");
