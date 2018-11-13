@@ -167,18 +167,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Random rand = new Random();
-                        int randomid = rand.nextInt(10000) + 1;
-                        while (dataTasks.categoryIdExists(randomid)) {
-                            randomid = rand.nextInt(10000) + 1;
-                        }
                         String category = spinner.getSelectedItem().toString();
                         boolean priority = simpleSwitch.isChecked();
 
                         String taskTitle = String.valueOf(taskEditText11.getText());
                         String taskDescription = String.valueOf(taskEditText21.getText());
 
-                        Task task = new Task(randomid, taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
-                        dataTasks.createTask(task);
+                        dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -207,16 +202,11 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Random rand = new Random();
-                        int randomid = rand.nextInt(10000) + 1;
-                        while (dataTasks.categoryIdExists(randomid)) {
-                            randomid = rand.nextInt(10000) + 1;
-                        }
+
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
-
-                        Category cat = new Category(randomid, categoryName, categoryColor);
-                        //getDataTasks().createCategory(cat);
+                        Category cat = new Category(dataTasks.getNewIDCategory(), categoryName, categoryColor);
+                        dataTasks.createCategory(cat);
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
                         menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());

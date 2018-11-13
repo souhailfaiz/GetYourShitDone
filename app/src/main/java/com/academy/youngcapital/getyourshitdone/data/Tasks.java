@@ -85,10 +85,21 @@ public class Tasks implements Serializable {
         return lastTask.getId() + 1;
     }
 
-    public void createTask(int id, String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
+    public int getNewIDCategory()
+    {
+        if(allCategories.size() < 1){
+            return 0;
+        }
+
+        Category lastCategory = getAllCategories().get(getAllCategories().size() - 1);
+        lastCategory.getId();
+
+        return lastCategory.getId() + 1;
+    }
+
+    public void createTask(String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
 
         this.allTasks.add(new Task(getNewID(), title, description, priority, category, attachments));
-        this.allTasks.add(new Task(id, title, description, priority, category, attachments));
 
         this.saveTasks();
     }
@@ -100,7 +111,7 @@ public class Tasks implements Serializable {
     }
 
     public void createCategory(String name, String kleur) {
-        this.allCategories.add(new Category(1, name, kleur));
+        this.allCategories.add(new Category(getNewIDCategory(), name, kleur));
         this.saveCategories();
     }
 
