@@ -13,6 +13,8 @@ public class ListSorter {
     }
 
     public static void senToTop(List<Task> list, int index) {
-        
+        Task task = list.get(index);
+        list.remove(index);
+        list.add(0, task);
     }
 }

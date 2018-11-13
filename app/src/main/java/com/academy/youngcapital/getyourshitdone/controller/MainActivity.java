@@ -3,6 +3,7 @@ package com.academy.youngcapital.getyourshitdone.controller;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,11 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.view.SubMenu;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
@@ -25,6 +28,11 @@ import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Tasks dataTasks;
     private ListView listView;
     private ListAdapter listAdapter;
+    private FloatingActionButton fab;
 
     public Tasks getDataTasks() {
         return dataTasks;
@@ -50,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView)findViewById(R.id.list_tasks);
+        listView = (ListView) findViewById(R.id.list_tasks);
+        fab = findViewById(R.id.fab);
 
         dataTasks = new Tasks(getApplicationContext());
 
@@ -82,33 +92,99 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.addcategory:
                         addCategoryView();
+                    case R.id.allcategories:
+                        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+                        listView.setAdapter(listAdapter);
+                }
+                for (Category category : dataTasks.getAllCategories()) {
+                    if (item.getItemId() == category.getId()) {
+                        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getTasksByCategory(item.getItemId()));
+                        listView.setAdapter(listAdapter);
+                    }
                 }
                 return true;
             }
         });
-
         for (Category num : dataTasks.getAllCategories()) {
-
-            menu.add(0, 123, 0, num.getTitle());
+            menu.add(0, num.getId(), 0, num.getTitle());
         }
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddTaskDialog(view);
+                Toast.makeText(getApplicationContext(), "Clicked add task", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void showAddTaskDialog(View view) {
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //title
+        final EditText taskEditText11 = new EditText(this);
+        layout.addView(taskEditText11);
+        taskEditText11.setHint("Task title");
+
+        //description
+        final EditText taskEditText21 = new EditText(this);
+        layout.addView(taskEditText21);
+        taskEditText21.setHint("Task Description");
+
+        //Category dropdown label
+        final TextView helloTextView = new TextView(this);
+        helloTextView.setText("Category");
+        layout.addView(helloTextView);
+
+        //dropdown with category
+        ArrayList<String> spinnerArray = new ArrayList<String>();
+        for (Category category : dataTasks.getAllCategories()) {
+            spinnerArray.add(category.getTitle());
+        }
+        Spinner spinner = new Spinner(this);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spinner.setAdapter(spinnerArrayAdapter);
+        layout.addView(spinner);
+
+        //prio with category
+        Switch simpleSwitch = new Switch(this);
+        simpleSwitch.setChecked(false);
+        layout.addView(simpleSwitch);
+        simpleSwitch.setText("Priority");
 
 
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Add a new Task")
+                .setView(layout)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        String category = String.valueOf(priospinner.getText());
+                        String taskTitle = String.valueOf(taskEditText11.getText());
+                        String taskDescription = String.valueOf(taskEditText21.getText());
+
+//                        Task task = new Task(1, categoryName, categoryColor);
+//                        Log.d(TAG, "Category to add: "+category);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-//        getMenuInflater().inflate(R.menu.main_menu, menu);
-//        getMenuInflater().inflate(R.menu.nav_menu_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean addCategoryView() {
+    public void addCategoryView() {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         final EditText taskEditText1 = new EditText(this);
@@ -123,19 +199,24 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Random rand = new Random();
+                        int randomid = rand.nextInt(10000) + 1;
+                        while (dataTasks.categoryIdExists(randomid)) {
+                            randomid = rand.nextInt(10000) + 1;
+                        }
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
-                        Category cat = new Category(categoryName, categoryColor);
-                        getDataTasks().createCategory(cat);
+
+                        Category cat = new Category(randomid, categoryName, categoryColor);
+                        //getDataTasks().createCategory(cat);
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
-                        menu.add(R.id.navmenu, cat.getNum(), Menu.NONE, cat.getTitle());
+                        menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog1.show();
-        return true;
     }
 
     @Override
@@ -145,39 +226,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         switch (item.getItemId()) {
+            case 4:
 
-
-            case R.id.action_add_task:
-                LinearLayout layout = new LinearLayout(this);
-                layout.setOrientation(LinearLayout.VERTICAL);
-                final EditText taskEditText11 = new EditText(this);
-                final EditText taskEditText21 = new EditText(this);
-                layout.addView(taskEditText11);
-                taskEditText11.setHint("Task title");
-                taskEditText21.setHint("Task Description");
-                layout.addView(taskEditText21);
-                AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Add a new Task")
-                        .setView(layout)
-                        .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String categoryName = String.valueOf(taskEditText11.getText());
-                                String categoryColor = String.valueOf(taskEditText21.getText());
-
-                                Category category = new Category(categoryName, categoryColor);
-                                Log.d(TAG, "Category to add: " + category.getColor() + category.getTitle());
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .create();
-                dialog.show();
                 return true;
             case 123:
                 Log.d(TAG, "Category to addfSDfdsfa: ");
                 return true;
-            case R.id.categoryMenuId:
-            case R.id.action_add_category:
+            case R.id.addcategory:
                 addCategoryView();
 
 
