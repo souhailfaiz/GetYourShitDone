@@ -189,7 +189,12 @@ public class MainActivity extends AppCompatActivity {
                         String taskTitle = String.valueOf(taskEditText11.getText());
                         String taskDescription = String.valueOf(taskEditText21.getText());
 
-                        dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
+                        if (taskTitle.length() > 2 && taskDescription.length() > 2) {
+                            dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Voer een titel en beschrijving toe!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -222,7 +227,13 @@ public class MainActivity extends AppCompatActivity {
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
                         Category cat = new Category(dataTasks.getNewIDCategory(), categoryName, categoryColor);
-                        dataTasks.createCategory(cat);
+                        if (categoryName.length()>2){
+                            dataTasks.createCategory(cat);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Voer een titel toe!", Toast.LENGTH_LONG).show();
+                        }
+
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
                         menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());
