@@ -5,23 +5,24 @@
 
 
     <group android:id="@+id/navmenu" android:checkableBehavior="single">
-        <item
-                android:id="@+id/removeallcategories"
-                android:title="Remove all categories"
+    <item
+        android:id="@+id/removeallcategories"
+        android:title="Remove all categories"
         />
 
-        <item
-                android:id="@+id/addcategory"
-                android:title="Add Category"
+    <item
+        android:id="@+id/addcategory"
+        android:title="Add Category"
 
         />
-        <item
-                android:id="@+id/allcategories"
-                android:title="All Categories"
+    <item
+        android:id="@+id/allcategories"
+        android:title="All Categories"
         />
 
 
-    </group>
+</group>
+
 
     <item android:title="Category">
         <menu>

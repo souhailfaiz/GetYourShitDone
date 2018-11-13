@@ -2,9 +2,11 @@ package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,13 +29,10 @@ import android.widget.Toast;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
-import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
-import org.w3c.dom.Text;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
@@ -45,30 +45,26 @@ public class MainActivity extends AppCompatActivity {
     // data/tasks.class
     private Tasks dataTasks;
     public static ListView listView;
-    private  ListAdapter listAdapter;
+    private ListAdapter listAdapter;
     private FloatingActionButton fab;
 
     public Tasks getDataTasks() {
         return dataTasks;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         dataTasks = new Tasks(getApplicationContext());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // ?????
         listView = (ListView) findViewById(R.id.list_tasks);
-        fab = findViewById(R.id.fab);
-
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
         listView.setAdapter(listAdapter);
-
         final Intent i = new Intent(this, EditActivity.class);
-
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,43 +74,45 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        //????
 
+
+        // Navigation toggle
         drawerLayout = findViewById(R.id.drawerId);
-
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+
+
+        final NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+        //add button to the layout
         Menu menu = navView.getMenu();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                // Add category and All categories button listener in navigation
                 switch (item.getItemId()) {
                     case R.id.addcategory:
                         showaddCategoryDialog();
                         drawerLayout.closeDrawer(navView);
-                        break;
                     case R.id.allcategories:
                         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                         listView.setAdapter(listAdapter);
                         drawerLayout.closeDrawer(navView);
-                        break;
-                    case R.id.removeallcategories:
-
-//                        dataTasks.removeAllCategories();
-//                        for(Category category: getDataTasks().getAllCategories()){
-//                            dataTasks.removeCategoryById(category.getId());
-////                            navView.getMenu().removeItem(category.getId());
-//                            Log.d(TAG, "Category to addfSDfdsfa: "+category.getId());
-//                        }
-//                        break;
-//                        drawerLayout.closeDrawer(navView);
                 }
+                //Remove all categories button listener in navigation
+                if (item.getItemId() == R.id.removeallcategories) {
+                    for (Category category : dataTasks.getAllCategories()) {
+                        navView.getMenu().removeItem(category.getId());
+                        Log.d(TAG, "Category to remove" + category.getId());
+                    }
+                    navView.getMenu().removeItem(0);
+                    dataTasks.removeAllCategories();
+                    drawerLayout.closeDrawer(navView);
+                }
+                // created category in navigation button listener
                 for (Category category : dataTasks.getAllCategories()) {
                     if (item.getItemId() == category.getId()) {
                         Toast.makeText(getApplicationContext(), "C" + item.getItemId() + " " + category.getId(), Toast.LENGTH_LONG).show();
@@ -126,10 +124,33 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        View.OnClickListener btnclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "" + view.getId());
+
+                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                navView.getMenu().removeItem(view.getId());
+                dataTasks.removeCategoryById(view.getId());
+                if (view.getId() == 0) {
+                    navView.getMenu().removeItem(0);
+                }
+            }
+        };
+
+
+        // Add categories in navigation
         for (Category category : dataTasks.getAllCategories()) {
-            menu.add(0, category.getId(), 0, category.getTitle());
+            final Button helloTextView = new Button(this);
+            helloTextView.setText("X");
+            helloTextView.setId(category.getId());
+            helloTextView.setOnClickListener(btnclick);
+            menu.add(0, category.getId(), 0, category.getTitle() + " " + category.getId()).setActionView(helloTextView);
         }
 
+        // Event listener for + icon for new task
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Clicked add task", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 
@@ -176,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(simpleSwitch);
         simpleSwitch.setText("Priority");
 
-
+        //create dialog
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Task")
                 .setView(layout)
@@ -198,26 +218,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
+    //add new category dialog
     public void showaddCategoryDialog() {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+
+        // editbox for catergory name
         final EditText taskEditText1 = new EditText(this);
-        final EditText taskEditText2 = new EditText(this);
         layout.addView(taskEditText1);
         taskEditText1.setHint("Category name");
+
+        // editbox for category color
+        final EditText taskEditText2 = new EditText(this);
         taskEditText2.setHint("Category Color");
         layout.addView(taskEditText2);
-        AlertDialog dialog1 = new AlertDialog.Builder(this)
+
+        //create dialog box
+        final Button helloTextView = new Button(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Category")
                 .setView(layout)
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        View.OnClickListener btnclick = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.d(TAG, "" + view.getId());
+
+                                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                                navView.getMenu().removeItem(view.getId());
+                                dataTasks.removeCategoryById(view.getId());
+                                if (view.getId() == 0) {
+                                    navView.getMenu().removeItem(0);
+                                }
+                            }
+                        };
 
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
@@ -225,14 +262,25 @@ public class MainActivity extends AppCompatActivity {
                         dataTasks.createCategory(cat);
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
-                        menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());
-                        Log.d(TAG, "Category to addfSDfdsfa: ");
+
+                        helloTextView.setText("X");
+                        helloTextView.setId(cat.getId());
+                        helloTextView.setOnClickListener(btnclick);
+                        menu.add(0, cat.getId(), 0, cat.getTitle() + " " + cat.getId()).setActionView(helloTextView);
+                        Log.d(TAG, "Category to addfSDfdsfa: " + cat.getId());
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .create();
-        dialog1.show();
+        dialog.show();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //hamburger menu toggle
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {

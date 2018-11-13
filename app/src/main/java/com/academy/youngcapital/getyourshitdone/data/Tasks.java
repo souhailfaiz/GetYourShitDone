@@ -74,12 +74,9 @@ public class Tasks implements Serializable {
 
     }
 
-    public void deleteTask(int id)
-    {
-        for(Task item : allTasks)
-        {
-            if(item.getId() == id)
-            {
+    public void deleteTask(int id) {
+        for (Task item : allTasks) {
+            if (item.getId() == id) {
                 allTasks.remove(item);
                 saveTasks();
 
@@ -87,12 +84,10 @@ public class Tasks implements Serializable {
         }
 
 
-
     }
 
-    private int getNewID()
-    {
-        if(allTasks.size() < 1){
+    private int getNewID() {
+        if (allTasks.size() < 1) {
             return 0;
         }
 
@@ -102,9 +97,8 @@ public class Tasks implements Serializable {
         return lastTask.getId() + 1;
     }
 
-    public int getNewIDCategory()
-    {
-        if(allCategories.size() < 1){
+    public int getNewIDCategory() {
+        if (allCategories.size() < 1) {
             return 0;
         }
 
@@ -157,8 +151,17 @@ public class Tasks implements Serializable {
         return filteredTasks;
     }
 
+    public void removeAllCategories() {
+        this.allCategories.clear();
+        saveCategories();
+    }
+
     public void removeCategoryById(int id) {
-        this.allCategories.remove(id);
+        for(Category category: this.getAllCategories()){
+            if(category.getId() == id){
+                this.allCategories.remove(category);
+            }
+        }
         saveCategories();
     }
 
@@ -184,9 +187,9 @@ public class Tasks implements Serializable {
         editor.apply();
     }
 
-    public Category getCategoryByName(String name){
-        for(Category category : this.getAllCategories()){
-            if(category.getTitle().contains(name)){
+    public Category getCategoryByName(String name) {
+        for (Category category : this.getAllCategories()) {
+            if (category.getTitle().contains(name)) {
                 return category;
             }
         }
