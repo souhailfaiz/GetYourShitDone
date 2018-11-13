@@ -23,6 +23,8 @@ public class Tasks implements Serializable {
     private ArrayList<Category> allCategories = new ArrayList<>();
 
     private Context context;
+    private SharedPreferences sharedPreferences;
+    private Gson gson = new Gson();
 
 
     public Tasks(Context context) {
@@ -33,8 +35,7 @@ public class Tasks implements Serializable {
         // OPGESLAGEN TASKS OPHALEN //
 
         // shared pref
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
-        Gson gson = new Gson();
+        sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
 
         // data ophalen uit file
         String json = sharedPreferences.getString("task list", null);
@@ -69,12 +70,25 @@ public class Tasks implements Serializable {
                 this.createCategory(item);
             }
         }
+
+
     }
 
+    private int getNewID()
+    {
+        if(allTasks.size() < 1){
+            return 0;
+        }
+
+        Task lastTask = getAllTasks().get(getAllTasks().size() - 1);
+        lastTask.getId();
+
+        return lastTask.getId() + 1;
+    }
 
     public void createTask(String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
 
-        this.allTasks.add(new Task(1, title, description, priority, category, attachments));
+        this.allTasks.add(new Task(getNewID(), title, description, priority, category, attachments));
 
         this.saveTasks();
     }
@@ -132,17 +146,17 @@ public class Tasks implements Serializable {
     public void saveTasks() {
 
         // Sharedpref opzetten
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization
-        Gson gson = new Gson();
         String json = gson.toJson(this.getAllTasks());
 
         // In bestand opslaan
         editor.putString("task list", json);
         editor.apply();
     }
+
     public Category getCategoryByName(String name){
         for(Category category : this.getAllCategories()){
             if(category.getTitle().contains(name)){
@@ -154,11 +168,10 @@ public class Tasks implements Serializable {
 
     public void saveCategories() {
         // Sharedpref opzetten
-        SharedPreferences sharedPreferences = this.context.getSharedPreferences("catStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("catStorage", this.context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization
-        Gson gson = new Gson();
         String json = gson.toJson(this.getAllCategories());
 
         // In bestand opslaan
