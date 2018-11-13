@@ -6,8 +6,8 @@
 
     <group android:id="@+id/navmenu" android:checkableBehavior="single">
         <item
-                android:id="@+id/ShareMenuId"
-                android:title="Share"
+                android:id="@+id/removeallcategories"
+                android:title="Remove all categories"
         />
 
         <item

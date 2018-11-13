@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list_tasks);
         fab = findViewById(R.id.fab);
 
-        dataTasks = new Tasks(getApplicationContext());
-
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
         listView.setAdapter(listAdapter);
 
@@ -87,31 +85,48 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
         Menu menu = navView.getMenu();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                 switch (item.getItemId()) {
                     case R.id.addcategory:
                         showaddCategoryDialog();
+                        drawerLayout.closeDrawer(navView);
+                        break;
                     case R.id.allcategories:
                         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                         listView.setAdapter(listAdapter);
+                        drawerLayout.closeDrawer(navView);
+                        break;
+                    case R.id.removeallcategories:
+
+//                        dataTasks.removeAllCategories();
+//                        for(Category category: getDataTasks().getAllCategories()){
+//                            dataTasks.removeCategoryById(category.getId());
+////                            navView.getMenu().removeItem(category.getId());
+//                            Log.d(TAG, "Category to addfSDfdsfa: "+category.getId());
+//                        }
+//                        break;
+//                        drawerLayout.closeDrawer(navView);
                 }
                 for (Category category : dataTasks.getAllCategories()) {
                     if (item.getItemId() == category.getId()) {
                         Toast.makeText(getApplicationContext(), "C" + item.getItemId() + " " + category.getId(), Toast.LENGTH_LONG).show();
                         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getTasksByCategory(item.getItemId()));
                         listView.setAdapter(listAdapter);
+                        drawerLayout.closeDrawer(navView);
                     }
                 }
                 return true;
             }
         });
-        for (Category num : dataTasks.getAllCategories()) {
-            menu.add(0, num.getId(), 0, num.getTitle());
+        for (Category category : dataTasks.getAllCategories()) {
+            menu.add(0, category.getId(), 0, category.getTitle());
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Random rand = new Random();
                         String category = spinner.getSelectedItem().toString();
                         boolean priority = simpleSwitch.isChecked();
 

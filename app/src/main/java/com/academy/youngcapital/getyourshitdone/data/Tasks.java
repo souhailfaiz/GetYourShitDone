@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,13 +141,9 @@ public class Tasks implements Serializable {
         return filteredTasks;
     }
 
-    public boolean categoryIdExists(int id) {
-        for (Category category : this.getAllCategories()) {
-            if (category.getId() != id) {
-                return false;
-            }
-        }
-        return true;
+    public void removeCategoryById(int id) {
+        this.allCategories.remove(id);
+        saveCategories();
     }
 
     public ArrayList<Task> getAllTasks() {
