@@ -1,6 +1,7 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
+import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final
     String TAG = "MainActivity";
+    public static final String MESSAGE = "com.example.SIMPLE_MESSAGE";
 
     // data/tasks.class
     private Tasks dataTasks;
@@ -43,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dataTasks = new Tasks(getApplicationContext());
-        dataTasks.createCategory(new Category("School", "blue"));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -55,10 +57,15 @@ public class MainActivity extends AppCompatActivity {
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
         listView.setAdapter(listAdapter);
 
+        final Intent i = new Intent(this, EditActivity.class);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Clicked task id = " + view.getTag(), Toast.LENGTH_SHORT).show();
+
+                int taskID = Integer.parseInt(view.getTag().toString());
+                i.putExtra("task_id", taskID);
+                startActivity(i);
             }
         });
 
@@ -87,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
             menu.add(0, 123, 0, num.getTitle());
         }
+
+
 
 
     }

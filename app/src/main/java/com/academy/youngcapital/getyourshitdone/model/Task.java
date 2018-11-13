@@ -4,6 +4,7 @@ import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

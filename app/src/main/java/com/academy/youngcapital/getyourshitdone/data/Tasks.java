@@ -12,11 +12,12 @@ import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Tasks {
+public class Tasks implements Serializable {
 
     private ArrayList<Task> allTasks = new ArrayList<>();
     private ArrayList<Category> allCategories = new ArrayList<>();
@@ -90,6 +91,7 @@ public class Tasks {
         this.saveCategories();
     }
 
+
     public void createCategory(Category cat){ this.allCategories.add(cat); this.saveCategories(); }
 
     public ArrayList<String> getItems() {
@@ -136,5 +138,18 @@ public class Tasks {
         // In bestand opslaan
         editor.putString("cat list", json);
         editor.apply();
+    }
+
+    public Task getTaskById(int id)
+    {
+        for(Task item : allTasks)
+        {
+            if(item.getId() == id)
+            {
+                return item;
+            }
+        }
+
+        return null;
     }
 }
