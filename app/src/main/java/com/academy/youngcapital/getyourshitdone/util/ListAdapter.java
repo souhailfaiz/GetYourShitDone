@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
+import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 
 import java.util.ArrayList;
@@ -21,10 +22,18 @@ public class ListAdapter extends BaseAdapter {
 
     private Context context;
     private List<Task> taskList;
+    private Tasks dataTasks;
 
     public ListAdapter(Context context, List<Task> taskList) {
         this.context = context;
         this.taskList = taskList;
+    }
+
+    public ListAdapter(Context context, Tasks dataTasks)
+    {
+        this.dataTasks = dataTasks;
+        this.context = context;
+        this.taskList = dataTasks.getAllTasks();
     }
 
     @Override
@@ -84,6 +93,10 @@ public class ListAdapter extends BaseAdapter {
 
         //save task id to tag
         v.setTag(taskList.get(position).getId());
+
+        if(dataTasks != null) {
+            dataTasks.saveTasks();
+        }
 
         return v;
     }
