@@ -44,7 +44,7 @@ public class Task {
         this.id = id;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
