@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         dataTasks = new Tasks(getApplicationContext());
 
         super.onCreate(savedInstanceState);
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 for (Category category : dataTasks.getAllCategories()) {
                     if (item.getItemId() == category.getId()) {
+                        Toast.makeText(getApplicationContext(), "C" + item.getItemId() + " " + category.getId(), Toast.LENGTH_LONG).show();
                         listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getTasksByCategory(item.getItemId()));
                         listView.setAdapter(listAdapter);
                     }
@@ -146,17 +148,16 @@ public class MainActivity extends AppCompatActivity {
         for (Category category : dataTasks.getAllCategories()) {
             spinnerArray.add(category.getTitle());
         }
-        Spinner spinner = new Spinner(this);
+        final Spinner spinner = new Spinner(this);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinner.setAdapter(spinnerArrayAdapter);
         layout.addView(spinner);
 
         //prio with category
-        Switch simpleSwitch = new Switch(this);
+        final Switch simpleSwitch = new Switch(this);
         simpleSwitch.setChecked(false);
         layout.addView(simpleSwitch);
         simpleSwitch.setText("Priority");
-
 
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -165,12 +166,19 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        String category = String.valueOf(priospinner.getText());
+                        Random rand = new Random();
+                        int randomid = rand.nextInt(10000) + 1;
+                        while (dataTasks.categoryIdExists(randomid)) {
+                            randomid = rand.nextInt(10000) + 1;
+                        }
+                        String category = spinner.getSelectedItem().toString();
+                        boolean priority = simpleSwitch.isChecked();
+
                         String taskTitle = String.valueOf(taskEditText11.getText());
                         String taskDescription = String.valueOf(taskEditText21.getText());
 
-//                        Task task = new Task(1, categoryName, categoryColor);
-//                        Log.d(TAG, "Category to add: "+category);
+                        Task task = new Task(randomid, taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
+                        dataTasks.createTask(task);
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -212,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
                         menu.add(R.id.navmenu, cat.getId(), Menu.NONE, cat.getTitle());
+                        Log.d(TAG, "Category to addfSDfdsfa: ");
                     }
                 })
                 .setNegativeButton("Cancel", null)

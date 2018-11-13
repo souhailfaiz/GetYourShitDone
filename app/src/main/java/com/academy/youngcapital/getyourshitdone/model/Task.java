@@ -18,11 +18,11 @@ public class Task {
     private Category category;
     private ArrayList<Attachment> attachments = new ArrayList<>();
 
-    private int priority;
+    private boolean priority;
     private boolean isCompleted;
     private Date date;
 
-    public Task(int id, String title, String description, int priority, Category category, ArrayList<Attachment> attachments) {
+    public Task(int id, String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -57,7 +57,7 @@ public class Task {
         return this.category;
     }
 
-    public int getPriority() {
+    public boolean getPriority() {
         return this.priority;
     }
 
@@ -77,7 +77,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(boolean priority) {
         this.priority = priority;
     }
 
