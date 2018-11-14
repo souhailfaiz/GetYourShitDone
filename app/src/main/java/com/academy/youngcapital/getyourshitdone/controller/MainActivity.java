@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public Button createButton(int id){
+    public Button createButton(int id) {
         final Button removeCategoryButton = new Button(this);
         View.OnClickListener btnclick = new View.OnClickListener() {
             @Override
