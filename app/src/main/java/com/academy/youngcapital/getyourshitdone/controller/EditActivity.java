@@ -20,10 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ShareActionProvider;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
@@ -34,7 +32,6 @@ import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class EditActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 43;
@@ -96,7 +93,8 @@ public class EditActivity extends AppCompatActivity {
 
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                 MainActivity.listView.setAdapter(listAdapter);
-
+                dataTasks.saveTasks();
+                MainActivity.dataTasks = dataTasks;
                 onBackPressed();
 
             }
@@ -105,8 +103,7 @@ public class EditActivity extends AppCompatActivity {
         //opslaan
         opslaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 currentTask.setTitle(editTitle.getText().toString());
                 currentTask.setDescription(editNotes.getText().toString());
                 currentTask.setPriority(switchPriority.isChecked());
@@ -121,6 +118,7 @@ public class EditActivity extends AppCompatActivity {
 
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                 MainActivity.listView.setAdapter(listAdapter);
+                MainActivity.dataTasks = dataTasks;
 
                 dataTasks.saveTasks();
 
@@ -142,8 +140,9 @@ public class EditActivity extends AppCompatActivity {
     }
 
     //initialize all view variables needed
-    private void initView(){
+    private void initView() {
         actionBar = getSupportActionBar();
+
         editTitle = (EditText)findViewById(R.id.editTitle);
         editNotes = (EditText)findViewById(R.id.editNotes);
         switchPriority = (Switch)findViewById(R.id.editPriority);
@@ -166,11 +165,11 @@ public class EditActivity extends AppCompatActivity {
     }
 
     //get data from previous screen
-    private void getDataFromPreviousScreen(){
+    private void getDataFromPreviousScreen() {
         Intent intent = getIntent();
 
         dataTasks = new Tasks(getApplicationContext());
-        task_id = intent.getIntExtra("task_id",-1);
+        task_id = intent.getIntExtra("task_id", -1);
     }
 
 
@@ -184,7 +183,7 @@ public class EditActivity extends AppCompatActivity {
     //Listeners for menu buttons.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
 
@@ -200,7 +199,7 @@ public class EditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String getMessage(){
+    private String getMessage() {
         StringBuilder message = new StringBuilder();
 
         message.append("Title: ");

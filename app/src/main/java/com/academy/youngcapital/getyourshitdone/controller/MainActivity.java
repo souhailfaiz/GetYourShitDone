@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,6 @@ import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,52 +41,63 @@ public class MainActivity extends AppCompatActivity {
 
     private static final
     String TAG = "MainActivity";
-    public static final String MESSAGE = "com.example.SIMPLE_MESSAGE";
 
     // data/tasks.class
-    private Tasks dataTasks;
+    public static Tasks dataTasks;
     public static ListView listView;
     private ListAdapter listAdapter;
-    private FloatingActionButton fab;
-
-    public Tasks getDataTasks() {
-        return dataTasks;
-    }
-
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dataTasks = new Tasks(getApplicationContext());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ?????
+        dataTasks = new Tasks(getApplicationContext());
+
+        loadTasks();
+
+        // Navigation toggle
+        navigationToggle();
+
+        // Load navigation view and set eventlisteners for all buttons
+        navigationButtonsEventListener();
+
+        // Event listener for + icon and show task dialog.
+        addTaskEventListener();
+    }
+
+    public void loadTasks() {
         listView = (ListView) findViewById(R.id.list_tasks);
-        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+
+        listAdapter = new ListAdapter(getApplicationContext(), dataTasks);
 
         listView.setAdapter(listAdapter);
-        final Intent i = new Intent(this, EditActivity.class);
+
+        final Intent intent = new Intent(this, EditActivity.class);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 int taskID = Integer.parseInt(view.getTag().toString());
-                i.putExtra("task_id", taskID);
-                startActivity(i);
+                intent.putExtra("task_id", taskID);
+                startActivity(intent);
             }
         });
-        //????
+    }
 
+    public void addTaskEventListener() {
+        // Event listener for + icon for new task
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddTaskDialog(view);
+            }
+        });
+    }
 
-        // Navigation toggle
-        drawerLayout = findViewById(R.id.drawerId);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+    public void navigationButtonsEventListener() {
         final NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
         //add button to the layout
         Menu menu = navView.getMenu();
@@ -126,39 +138,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        View.OnClickListener btnclick = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "" + view.getId());
-
-                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
-                navView.getMenu().removeItem(view.getId());
-                dataTasks.removeCategoryById(view.getId());
-                if (view.getId() == 0) {
-                    navView.getMenu().removeItem(0);
-                }
-            }
-        };
-
 
         // Add categories in navigation
         for (Category category : dataTasks.getAllCategories()) {
-            final Button helloTextView = new Button(this);
-            helloTextView.setText("X");
-            helloTextView.setId(category.getId());
-            helloTextView.setOnClickListener(btnclick);
-            menu.add(0, category.getId(), 0, category.getTitle() + " " + category.getId()).setActionView(helloTextView);
-        }
+            Button removeCategoryButton = createButton(category.getId());
+            SpannableString s = new SpannableString(category.getTitle());
 
-        // Event listener for + icon for new task
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddTaskDialog(view);
-                Toast.makeText(getApplicationContext(), "Clicked add task", Toast.LENGTH_SHORT).show();
-            }
-        });
+            s.setSpan(new ForegroundColorSpan(createColor(category.getColor())), 0, s.length(), 0);
+            menu.add(0, category.getId(), 0, s).setActionView(removeCategoryButton);
+        }
+    }
+
+    public int createColor(String color) {
+
+        switch (color.toLowerCase()) {
+            case "red":
+                return Color.RED;
+            case "green":
+                return Color.GREEN;
+            case "blue":
+                return Color.BLUE;
+            case "black":
+                return Color.BLACK;
+            case "gray":
+                return Color.GRAY;
+            case "cyan":
+                return Color.CYAN;
+            case "magenta":
+                return Color.MAGENTA;
+            default:
+                return Color.BLACK;
+        }
     }
 
 
@@ -182,12 +192,12 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(helloTextView);
 
         //dropdown with category
-        ArrayList<String> spinnerArray = new ArrayList<String>();
+        ArrayList<String> spinnerArray = new ArrayList<>();
         for (Category category : dataTasks.getAllCategories()) {
             spinnerArray.add(category.getTitle());
         }
         final Spinner spinner = new Spinner(this);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         spinner.setAdapter(spinnerArrayAdapter);
         layout.addView(spinner);
 
@@ -212,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (taskTitle.length() > 2 && taskDescription.length() > 2) {
                             dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "Voer een titel en beschrijving toe!", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -224,6 +233,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public Button createButton(int id) {
+        final Button removeCategoryButton = new Button(this);
+        View.OnClickListener btnclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "" + view.getId());
+
+                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                navView.getMenu().removeItem(view.getId());
+                dataTasks.removeCategoryById(view.getId());
+                if (view.getId() == 0) {
+                    navView.getMenu().removeItem(0);
+                }
+            }
+        };
+
+        removeCategoryButton.setText("X");
+        removeCategoryButton.setId(id);
+        removeCategoryButton.setOnClickListener(btnclick);
+
+        return removeCategoryButton;
+    }
+
     //add new category dialog
     public void showaddCategoryDialog() {
         LinearLayout layout = new LinearLayout(this);
@@ -232,15 +264,15 @@ public class MainActivity extends AppCompatActivity {
         // editbox for catergory name
         final EditText taskEditText1 = new EditText(this);
         layout.addView(taskEditText1);
-        taskEditText1.setHint("Category name");
+        taskEditText1.setHint("Name");
 
         // editbox for category color
         final EditText taskEditText2 = new EditText(this);
-        taskEditText2.setHint("Category Color");
+        taskEditText2.setHint("Color (red, blue, green, cyan, black, gray, magenta)");
         layout.addView(taskEditText2);
 
         //create dialog box
-        final Button helloTextView = new Button(this);
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Category")
                 .setView(layout)
@@ -265,20 +297,21 @@ public class MainActivity extends AppCompatActivity {
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
                         Category cat = new Category(dataTasks.getNewIDCategory(), categoryName, categoryColor);
-                        if (categoryName.length()>2){
+                        if (categoryName.length() > 2) {
                             dataTasks.createCategory(cat);
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "Voer een titel toe!", Toast.LENGTH_LONG).show();
                         }
 
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
 
-                        helloTextView.setText("X");
-                        helloTextView.setId(cat.getId());
-                        helloTextView.setOnClickListener(btnclick);
-                        menu.add(0, cat.getId(), 0, cat.getTitle() + " " + cat.getId()).setActionView(helloTextView);
+
+                        Button removeCategoryButton = createButton(cat.getId());
+                        SpannableString s = new SpannableString(cat.getTitle());
+
+                        s.setSpan(new ForegroundColorSpan(createColor(cat.getColor())), 0, s.length(), 0);
+                        menu.add(0, cat.getId(), 0, s).setActionView(removeCategoryButton);
                         Log.d(TAG, "Category to addfSDfdsfa: " + cat.getId());
                     }
                 })
@@ -290,6 +323,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void navigationToggle() {
+        drawerLayout = findViewById(R.id.drawerId);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     //hamburger menu toggle
