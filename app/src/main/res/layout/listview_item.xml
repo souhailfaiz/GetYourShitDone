@@ -13,12 +13,12 @@
 
     <TextView
         android:id="@+id/taskTitle"
-        android:layout_width="173dp"
+        android:layout_width="343dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="2dp"
         android:text="Dit is een task."
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
 </RelativeLayout>

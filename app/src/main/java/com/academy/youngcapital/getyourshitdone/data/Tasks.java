@@ -84,7 +84,7 @@ public class Tasks implements Serializable {
             if (item.getId() == id) {
                 allTasks.remove(item);
                 saveTasks();
-
+                return;
             }
         }
 
