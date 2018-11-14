@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MESSAGE = "com.example.SIMPLE_MESSAGE";
 
     // data/tasks.class
-    private Tasks dataTasks;
+    public static Tasks dataTasks;
     public static ListView listView;
     private ListAdapter listAdapter;
     private FloatingActionButton fab;

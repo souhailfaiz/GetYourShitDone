@@ -66,7 +66,8 @@ public class EditActivity extends AppCompatActivity {
 
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                 MainActivity.listView.setAdapter(listAdapter);
-
+                dataTasks.saveTasks();
+                MainActivity.dataTasks = dataTasks;
                 onBackPressed();
 
             }
@@ -90,6 +91,7 @@ public class EditActivity extends AppCompatActivity {
 
                 ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
                 MainActivity.listView.setAdapter(listAdapter);
+                MainActivity.dataTasks = dataTasks;
 
                 dataTasks.saveTasks();
 
