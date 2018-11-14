@@ -41,6 +41,7 @@ public class EditActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerArrayAdapter;
     private ArrayList<String> spinnerArray;
     private Button deleteButton;
+    private Button opslaanButton;
 
     @SuppressLint("A.K.A. JUNAID A NIFFFFFOOOO")
     @Override
@@ -70,6 +71,33 @@ public class EditActivity extends AppCompatActivity {
 
             }
         });
+
+        opslaanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                currentTask.setTitle(editTitle.getText().toString());
+                currentTask.setDescription(editNotes.getText().toString());
+                currentTask.setPriority(switchPriority.isChecked());
+
+
+                String catName = spinnerCategory.getSelectedItem().toString();
+                Category selectedCat = dataTasks.getCategoryByName(catName);
+                currentTask.setCategory(selectedCat);
+                Log.d("Category Editor", "Selected: " + catName + "  Overgezet:" + selectedCat.getTitle() + " NEWval:" + currentTask.getCategory().getTitle());
+
+                currentTask.setIsCompleted(checkFinished.isChecked());
+
+                ListAdapter listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+                MainActivity.listView.setAdapter(listAdapter);
+
+                dataTasks.saveTasks();
+
+                onBackPressed();
+
+                Log.d("Editor:", "Opgeslagen");
+            }
+        });
     }
 
     //set the view values
@@ -91,6 +119,7 @@ public class EditActivity extends AppCompatActivity {
         spinnerCategory = (Spinner)findViewById(R.id.editCat);
         checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
         deleteButton = (Button)findViewById(R.id.btnDelete);
+        opslaanButton = (Button)findViewById(R.id.btnOpslaan);
         currentTask = dataTasks.getTaskById(task_id);
         spinnerArray = new ArrayList<String>();
 
