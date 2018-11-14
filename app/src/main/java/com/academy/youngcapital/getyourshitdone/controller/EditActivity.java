@@ -1,7 +1,6 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.annotation.SuppressLint;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ShareActionProvider;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
@@ -26,7 +23,6 @@ import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class EditActivity extends AppCompatActivity {
     private ActionBar actionBar;
@@ -74,8 +70,7 @@ public class EditActivity extends AppCompatActivity {
 
         opslaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 currentTask.setTitle(editTitle.getText().toString());
                 currentTask.setDescription(editNotes.getText().toString());
                 currentTask.setPriority(switchPriority.isChecked());
@@ -111,15 +106,15 @@ public class EditActivity extends AppCompatActivity {
     }
 
     //initialize all view variables needed
-    private void initView(){
+    private void initView() {
         actionBar = getSupportActionBar();
-        editTitle = (EditText)findViewById(R.id.editTitle);
-        editNotes = (EditText)findViewById(R.id.editNotes);
-        switchPriority = (Switch)findViewById(R.id.editPriority);
-        spinnerCategory = (Spinner)findViewById(R.id.editCat);
-        checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
-        deleteButton = (Button)findViewById(R.id.btnDelete);
-        opslaanButton = (Button)findViewById(R.id.btnOpslaan);
+        editTitle = (EditText) findViewById(R.id.editTitle);
+        editNotes = (EditText) findViewById(R.id.editNotes);
+        switchPriority = (Switch) findViewById(R.id.editPriority);
+        spinnerCategory = (Spinner) findViewById(R.id.editCat);
+        checkFinished = (CheckBox) findViewById(R.id.editIsCompleted);
+        deleteButton = (Button) findViewById(R.id.btnDelete);
+        opslaanButton = (Button) findViewById(R.id.btnOpslaan);
         currentTask = dataTasks.getTaskById(task_id);
         spinnerArray = new ArrayList<String>();
 
@@ -133,11 +128,11 @@ public class EditActivity extends AppCompatActivity {
     }
 
     //get data from previous screen
-    private void getDataFromPreviousScreen(){
+    private void getDataFromPreviousScreen() {
         Intent intent = getIntent();
 
         dataTasks = new Tasks(getApplicationContext());
-        task_id = intent.getIntExtra("task_id",-1);
+        task_id = intent.getIntExtra("task_id", -1);
     }
 
 
@@ -151,7 +146,7 @@ public class EditActivity extends AppCompatActivity {
     //Listeners for menu buttons.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
 
@@ -167,7 +162,7 @@ public class EditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String getMessage(){
+    private String getMessage() {
         StringBuilder message = new StringBuilder();
 
         message.append("Title: ");

@@ -92,7 +92,6 @@ public class Tasks implements Serializable {
         }
 
         Task lastTask = getAllTasks().get(getAllTasks().size() - 1);
-        lastTask.getId();
 
         return lastTask.getId() + 1;
     }
@@ -103,7 +102,6 @@ public class Tasks implements Serializable {
         }
 
         Category lastCategory = getAllCategories().get(getAllCategories().size() - 1);
-        lastCategory.getId();
 
         return lastCategory.getId() + 1;
     }
@@ -157,8 +155,8 @@ public class Tasks implements Serializable {
     }
 
     public void removeCategoryById(int id) {
-        for(Category category: this.getAllCategories()){
-            if(category.getId() == id){
+        for (Category category : this.getAllCategories()) {
+            if (category.getId() == id) {
                 this.allCategories.remove(category);
             }
         }
@@ -170,7 +168,7 @@ public class Tasks implements Serializable {
     }
 
     public ArrayList<Category> getAllCategories() {
-        return allCategories;
+        return this.allCategories;
     }
 
     public void saveTasks() {
@@ -210,7 +208,7 @@ public class Tasks implements Serializable {
     }
 
     public Task getTaskById(int id) {
-        for (Task item : allTasks) {
+        for (Task item : this.getAllTasks()) {
             if (item.getId() == id) {
                 return item;
             }

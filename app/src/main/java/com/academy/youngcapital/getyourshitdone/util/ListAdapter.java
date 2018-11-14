@@ -29,8 +29,7 @@ public class ListAdapter extends BaseAdapter {
         this.taskList = taskList;
     }
 
-    public ListAdapter(Context context, Tasks dataTasks)
-    {
+    public ListAdapter(Context context, Tasks dataTasks) {
         this.dataTasks = dataTasks;
         this.context = context;
         this.taskList = dataTasks.getAllTasks();
@@ -55,18 +54,18 @@ public class ListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context, R.layout.listview_item, null);
 
-        final TextView textView = (TextView)v.findViewById(R.id.taskTitle);
-        final CheckBox checkBox = (CheckBox)v.findViewById(R.id.taskCheckBox);
+        final TextView textView = (TextView) v.findViewById(R.id.taskTitle);
+        final CheckBox checkBox = (CheckBox) v.findViewById(R.id.taskCheckBox);
 
         //set alle text naar titel van elke task
         textView.setText(taskList.get(position).getTitle());
         checkBox.setChecked(taskList.get(position).isCompleted());
 
         //set alle tasks doorgestreept als ze completed zijn en anders niet
-        if(taskList.get(position).isCompleted()){
+        if (taskList.get(position).isCompleted()) {
             //doorstrepen van de tekst
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }else{
+        } else {
             //streep weghalen van de tekst
             textView.setPaintFlags(0);
 
@@ -78,11 +77,11 @@ public class ListAdapter extends BaseAdapter {
                 //set de task op done of niet done.
                 taskList.get(position).setIsCompleted(checkBox.isChecked());
 
-                if(taskList.get(position).isCompleted()){
+                if (taskList.get(position).isCompleted()) {
                     //tasks die completed zijn onder in de lijst zetten
                     ListSorter.sendToBottom(taskList, taskList.indexOf(taskList.get(position)));
                     notifyDataSetChanged();
-                }else{
+                } else {
                     //tasks die niet completed zijn boven in de lijst zetten
                     ListSorter.senToTop(taskList, taskList.indexOf(taskList.get(position)));
                     notifyDataSetChanged();
@@ -94,7 +93,7 @@ public class ListAdapter extends BaseAdapter {
         //save task id to tag
         v.setTag(taskList.get(position).getId());
 
-        if(dataTasks != null) {
+        if (dataTasks != null) {
             dataTasks.saveTasks();
         }
 
