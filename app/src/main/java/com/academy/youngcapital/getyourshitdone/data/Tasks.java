@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class Tasks implements Serializable {
 
@@ -34,6 +35,8 @@ public class Tasks implements Serializable {
     public Tasks(Context context) {
         // Set context & Wrapper
         this.context = context;
+
+
 
         // OPGESLAGEN TASKS OPHALEN //
 
@@ -92,9 +95,10 @@ public class Tasks implements Serializable {
             return 0;
         }
 
-        Task lastTask = getAllTasks().get(getAllTasks().size() - 1);
+        Random rand = new Random();
+        Task lastTask = getAllTasks().get(getAllTasks().size() - 1) ;
 
-        return lastTask.getId() + 1;
+        return lastTask.getId() + 1 + rand.nextInt(1000) - rand.nextInt(50);
     }
 
     public int getNewIDCategory() {
@@ -102,9 +106,10 @@ public class Tasks implements Serializable {
             return 0;
         }
 
+        Random rand = new Random();
         Category lastCategory = getAllCategories().get(getAllCategories().size() - 1);
 
-        return lastCategory.getId() + 1;
+        return lastCategory.getId() + 1 + rand.nextInt(1000) - rand.nextInt(50);
     }
 
     public void createTask(String title, String description, boolean priority, Category category, Bitmap uriPicture) {
@@ -164,9 +169,11 @@ public class Tasks implements Serializable {
         for (Category category : this.getAllCategories()) {
             if (category.getId() == id) {
                 this.allCategories.remove(category);
+                saveCategories();
+                return;
             }
         }
-        saveCategories();
+
     }
 
     public ArrayList<Task> getAllTasks() {

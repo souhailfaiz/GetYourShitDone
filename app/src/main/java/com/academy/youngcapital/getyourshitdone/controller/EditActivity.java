@@ -51,7 +51,6 @@ public class EditActivity extends AppCompatActivity {
     private Button uploadBtn;
     private Button showBtn;
 
-    @SuppressLint("A.K.A. JUNAID A NIFFFFFOOOO")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,10 +108,24 @@ public class EditActivity extends AppCompatActivity {
                 currentTask.setPriority(switchPriority.isChecked());
 
 
-                String catName = spinnerCategory.getSelectedItem().toString();
-                Category selectedCat = dataTasks.getCategoryByName(catName);
-                currentTask.setCategory(selectedCat);
-                Log.d("Category Editor", "Selected: " + catName + "  Overgezet:" + selectedCat.getTitle() + " NEWval:" + currentTask.getCategory().getTitle());
+                String catName;
+                if(spinnerCategory.getSelectedItem() == null)
+                {
+                    catName = null;
+                }
+                else
+                {
+                    catName = spinnerCategory.getSelectedItem().toString();
+                }
+
+                if(catName != null) {
+                    Category selectedCat = dataTasks.getCategoryByName(catName);
+                    currentTask.setCategory(selectedCat);
+                }
+                else
+                {
+                    currentTask.setCategory(null);
+                }
 
                 currentTask.setIsCompleted(checkFinished.isChecked());
 

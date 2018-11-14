@@ -3,6 +3,8 @@ package com.academy.youngcapital.getyourshitdone.util;
 import android.content.Context;
 import android.graphics.ColorSpace;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +61,17 @@ public class ListAdapter extends BaseAdapter {
 
         //set alle text naar titel van elke task
         textView.setText(taskList.get(position).getTitle());
+
+        if(taskList.get(position).getCategory() != null) {
+            textView.setTextColor(taskList.get(position).getCategory().getColorCode());
+        }
+
         checkBox.setChecked(taskList.get(position).isCompleted());
+
+        if(taskList.get(position).getPriority())
+        {
+            textView.setTypeface(null, Typeface.BOLD);
+        }
 
         //set alle tasks doorgestreept als ze completed zijn en anders niet
         if (taskList.get(position).isCompleted()) {

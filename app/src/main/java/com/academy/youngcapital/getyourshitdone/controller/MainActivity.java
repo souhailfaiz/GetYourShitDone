@@ -144,32 +144,11 @@ public class MainActivity extends AppCompatActivity {
             Button removeCategoryButton = createButton(category.getId());
             SpannableString s = new SpannableString(category.getTitle());
 
-            s.setSpan(new ForegroundColorSpan(createColor(category.getColor())), 0, s.length(), 0);
+            s.setSpan(new ForegroundColorSpan(category.getColorCode()), 0, s.length(), 0);
             menu.add(0, category.getId(), 0, s).setActionView(removeCategoryButton);
         }
     }
 
-    public int createColor(String color) {
-
-        switch (color.toLowerCase()) {
-            case "red":
-                return Color.RED;
-            case "green":
-                return Color.GREEN;
-            case "blue":
-                return Color.BLUE;
-            case "black":
-                return Color.BLACK;
-            case "gray":
-                return Color.GRAY;
-            case "cyan":
-                return Color.CYAN;
-            case "magenta":
-                return Color.MAGENTA;
-            default:
-                return Color.BLACK;
-        }
-    }
 
 
     public void showAddTaskDialog(View view) {
@@ -214,7 +193,17 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String category = spinner.getSelectedItem().toString();
+                        String category;
+
+                        if(spinner.getSelectedItem() == null)
+                        {
+                            category = null;
+                        }
+                        else
+                        {
+                            category = spinner.getSelectedItem().toString();
+                        }
+
                         boolean priority = simpleSwitch.isChecked();
 
                         String taskTitle = String.valueOf(taskEditText11.getText());
@@ -310,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                         Button removeCategoryButton = createButton(cat.getId());
                         SpannableString s = new SpannableString(cat.getTitle());
 
-                        s.setSpan(new ForegroundColorSpan(createColor(cat.getColor())), 0, s.length(), 0);
+                        s.setSpan(new ForegroundColorSpan(cat.getColorCode()), 0, s.length(), 0);
                         menu.add(0, cat.getId(), 0, s).setActionView(removeCategoryButton);
                         Log.d(TAG, "Category to addfSDfdsfa: " + cat.getId());
                     }
