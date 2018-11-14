@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
 
     // data/tasks.class
-    private Tasks dataTasks;
+    public static Tasks dataTasks;
     public static ListView listView;
     private ListAdapter listAdapter;
     FloatingActionButton fab;
@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadTasks() {
         listView = (ListView) findViewById(R.id.list_tasks);
-        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+
+        listAdapter = new ListAdapter(getApplicationContext(), dataTasks);
+
         listView.setAdapter(listAdapter);
 
         final Intent intent = new Intent(this, EditActivity.class);
