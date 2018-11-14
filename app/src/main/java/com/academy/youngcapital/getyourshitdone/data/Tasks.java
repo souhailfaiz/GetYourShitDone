@@ -86,9 +86,6 @@ public class Tasks implements Serializable {
 
             }
         }
-
-
-
     }
 
     private int getNewID()

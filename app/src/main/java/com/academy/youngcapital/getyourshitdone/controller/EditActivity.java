@@ -80,9 +80,11 @@ public class EditActivity extends AppCompatActivity {
                 currentTask.setDescription(editNotes.getText().toString());
                 currentTask.setPriority(switchPriority.isChecked());
 
+
                 String catName = spinnerCategory.getSelectedItem().toString();
                 Category selectedCat = dataTasks.getCategoryByName(catName);
                 currentTask.setCategory(selectedCat);
+                Log.d("Category Editor", "Selected: " + catName + "  Overgezet:" + selectedCat.getTitle() + " NEWval:" + currentTask.getCategory().getTitle());
 
                 currentTask.setIsCompleted(checkFinished.isChecked());
 
