@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ?????
         listView = (ListView) findViewById(R.id.list_tasks);
-        listAdapter = new ListAdapter(getApplicationContext(), dataTasks.getAllTasks());
+        listAdapter = new ListAdapter(getApplicationContext(), dataTasks);
 
         listView.setAdapter(listAdapter);
         final Intent i = new Intent(this, EditActivity.class);
