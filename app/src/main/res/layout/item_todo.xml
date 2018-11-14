@@ -31,7 +31,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="88dp"
-        android:text="Wijzigingen opslaan" />
+        android:text="Wijzigingen opslaan"
+        android:layout_alignLeft="@+id/editTitle"
+        android:layout_marginLeft="8dp" />
 
     <Button
         android:id="@+id/btnDelete"
@@ -41,7 +43,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="29dp"
-        android:text="Verwijderen" />
+        android:text="Verwijderen"
+        android:layout_alignLeft="@+id/editTitle"
+        android:layout_marginLeft="10dp" />
 
     <EditText
         android:id="@+id/editNotes"
@@ -54,7 +58,9 @@
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine"
-        tools:text="Notes" />
+        tools:text="Notes"
+        android:layout_alignLeft="@+id/btnOpslaan"
+        android:layout_marginLeft="-5dp" />
 
     <Spinner
         android:id="@+id/editCat"
@@ -116,5 +122,21 @@
         android:layout_marginTop="64dp"
         android:text="Taak Omschrijving:"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnUploadImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editPriority"
+        android:layout_centerVertical="true"
+        android:text="Upload image" />
+
+    <Button
+        android:id="@+id/btnShowImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/editPriority"
+        android:layout_centerVertical="true"
+        android:text="Show image" />
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ package com.academy.youngcapital.getyourshitdone.data;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 import com.academy.youngcapital.getyourshitdone.controller.MainActivity;
@@ -32,7 +34,6 @@ public class Tasks implements Serializable {
     public Tasks(Context context) {
         // Set context & Wrapper
         this.context = context;
-
 
         // OPGESLAGEN TASKS OPHALEN //
 
@@ -108,10 +109,15 @@ public class Tasks implements Serializable {
         return lastCategory.getId() + 1;
     }
 
-    public void createTask(String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
+    public void createTask(String title, String description, boolean priority, Category category, Bitmap uriPicture) {
+        Task newTask = new Task(getNewID(), title, description, priority, category);
 
-        this.allTasks.add(new Task(getNewID(), title, description, priority, category, attachments));
 
+        if(uriPicture != null){
+            newTask.setUriPicture(uriPicture);
+        }
+
+        this.allTasks.add(newTask);
         this.saveTasks();
     }
 

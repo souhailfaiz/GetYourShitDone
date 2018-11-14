@@ -1,10 +1,14 @@
 package com.academy.youngcapital.getyourshitdone.model;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 
 
 import java.io.Serializable;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,19 +20,18 @@ public class Task {
     private String description;
 
     private Category category;
-    private ArrayList<Attachment> attachments = new ArrayList<>();
+    private Bitmap uriPicture;
 
     private boolean priority;
     private boolean isCompleted;
     private Date date;
 
-    public Task(int id, String title, String description, boolean priority, Category category, ArrayList<Attachment> attachments) {
+    public Task(int id, String title, String description, boolean priority, Category category) {
         this.id = id;
         this.title = title;
         this.description = description;
 
         this.category = category;
-        this.attachments = attachments;
 
         this.priority = priority;
 
@@ -87,6 +90,14 @@ public class Task {
 
     public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public Bitmap getUriPicture() {
+        return uriPicture;
+    }
+
+    public void setUriPicture(Bitmap uriPicture) {
+        this.uriPicture = uriPicture;
     }
 
     private void setDate() {

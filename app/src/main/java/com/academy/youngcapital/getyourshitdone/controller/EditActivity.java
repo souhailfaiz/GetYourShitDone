@@ -1,6 +1,12 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.content.Intent;
@@ -25,10 +31,13 @@ import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EditActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE = 43;
     private ActionBar actionBar;
     private Tasks dataTasks;
     private int task_id;
@@ -42,6 +51,8 @@ public class EditActivity extends AppCompatActivity {
     private ArrayList<String> spinnerArray;
     private Button deleteButton;
     private Button opslaanButton;
+    private Button uploadBtn;
+    private Button showBtn;
 
     @SuppressLint("A.K.A. JUNAID A NIFFFFFOOOO")
     @Override
@@ -58,6 +69,25 @@ public class EditActivity extends AppCompatActivity {
 
         setView();
 
+
+        //upload image
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearch();
+            }
+        });
+
+        //show image
+        showBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ImageActivity.class);
+                i.putExtra("task_id", currentTask.getId());
+                startActivity(i);
+            }
+        });
+
         // delete knop
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +102,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
+        //opslaan
         opslaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -120,6 +151,8 @@ public class EditActivity extends AppCompatActivity {
         checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
         deleteButton = (Button)findViewById(R.id.btnDelete);
         opslaanButton = (Button)findViewById(R.id.btnOpslaan);
+        uploadBtn = (Button)findViewById(R.id.btnUploadImg);
+        showBtn = (Button)findViewById(R.id.btnShowImg);
         currentTask = dataTasks.getTaskById(task_id);
         spinnerArray = new ArrayList<String>();
 
@@ -178,6 +211,35 @@ public class EditActivity extends AppCompatActivity {
 
         return message.toString();
     }
+
+    private void startSearch(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");//Files having mime datatype
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    //Bitmap aanmaken
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+            if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+                if(data != null){
+                    Uri uri = data.getData();
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    currentTask.setUriPicture(bitmap);
+                    dataTasks.saveTasks();
+                }
+        }
+    }
+
+
 
 
 }
