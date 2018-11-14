@@ -2,6 +2,7 @@ package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -138,7 +142,32 @@ public class MainActivity extends AppCompatActivity {
         // Add categories in navigation
         for (Category category : dataTasks.getAllCategories()) {
             Button removeCategoryButton = createButton(category.getId());
-            menu.add(0, category.getId(), 0, category.getTitle() + " " + category.getId()).setActionView(removeCategoryButton);
+            SpannableString s = new SpannableString(category.getTitle());
+
+            s.setSpan(new ForegroundColorSpan(createColor(category.getColor())), 0, s.length(), 0);
+            menu.add(0, category.getId(), 0, s).setActionView(removeCategoryButton);
+        }
+    }
+
+    public int createColor(String color) {
+
+        switch (color.toLowerCase()) {
+            case "red":
+                return Color.RED;
+            case "green":
+                return Color.GREEN;
+            case "blue":
+                return Color.BLUE;
+            case "black":
+                return Color.BLACK;
+            case "gray":
+                return Color.GRAY;
+            case "cyan":
+                return Color.CYAN;
+            case "magenta":
+                return Color.MAGENTA;
+            default:
+                return Color.BLACK;
         }
     }
 
@@ -235,11 +264,11 @@ public class MainActivity extends AppCompatActivity {
         // editbox for catergory name
         final EditText taskEditText1 = new EditText(this);
         layout.addView(taskEditText1);
-        taskEditText1.setHint("Category name");
+        taskEditText1.setHint("Name");
 
         // editbox for category color
         final EditText taskEditText2 = new EditText(this);
-        taskEditText2.setHint("Category Color");
+        taskEditText2.setHint("Color (red, blue, green, cyan, black, gray, magenta)");
         layout.addView(taskEditText2);
 
         //create dialog box
@@ -277,8 +306,12 @@ public class MainActivity extends AppCompatActivity {
                         NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
 
+
                         Button removeCategoryButton = createButton(cat.getId());
-                        menu.add(0, cat.getId(), 0, cat.getTitle() + " " + cat.getId()).setActionView(removeCategoryButton);
+                        SpannableString s = new SpannableString(cat.getTitle());
+
+                        s.setSpan(new ForegroundColorSpan(createColor(cat.getColor())), 0, s.length(), 0);
+                        menu.add(0, cat.getId(), 0, s).setActionView(removeCategoryButton);
                         Log.d(TAG, "Category to addfSDfdsfa: " + cat.getId());
                     }
                 })
