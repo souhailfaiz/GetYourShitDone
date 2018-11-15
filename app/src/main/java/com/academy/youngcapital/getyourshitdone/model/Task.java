@@ -20,7 +20,7 @@ public class Task {
     private String description;
 
     private Category category;
-    private Bitmap uriPicture;
+    private String uriPicture;
 
     private boolean priority;
     private boolean isCompleted;
@@ -92,11 +92,11 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
-    public Bitmap getUriPicture() {
+    public String getUriPicture() {
         return uriPicture;
     }
 
-    public void setUriPicture(Bitmap uriPicture) {
+    public void setUriPicture(String uriPicture) {
         this.uriPicture = uriPicture;
     }
 
