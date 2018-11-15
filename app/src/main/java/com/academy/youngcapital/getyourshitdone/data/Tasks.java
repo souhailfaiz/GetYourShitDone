@@ -152,9 +152,13 @@ public class Tasks implements Serializable {
 
     public ArrayList<Task> getTasksByCategory(int category) {
         ArrayList<Task> filteredTasks = new ArrayList<>();
-        for (Task item : this.getAllTasks()) {
-            if (item.getCategory().getId() == category) {
-                filteredTasks.add(item);
+        Log.d("catID:", Integer.toString(category));
+
+        for (Task item : allTasks) {
+            if(item.getCategory() != null) {
+                if (item.getCategory().getId() == category) {
+                    filteredTasks.add(item);
+                }
             }
         }
         return filteredTasks;
