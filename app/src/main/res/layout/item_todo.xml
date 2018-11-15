@@ -128,7 +128,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editPriority"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/btnShowImg"
+        android:layout_marginStart="-16dp"
+        android:layout_marginTop="0dp"
         android:text="Upload image" />
 
     <Button
@@ -138,5 +140,16 @@
         android:layout_alignEnd="@+id/editPriority"
         android:layout_centerVertical="true"
         android:text="Show image" />
+
+    <Button
+        android:id="@+id/cameraBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnUploadImg"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="121dp"
+        android:layout_marginRight="121dp"
+        android:text="Take picture" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 43;
+    private static final int CAM_REQUEST = 1313;
     private ActionBar actionBar;
     private Tasks dataTasks;
     private int task_id;
@@ -43,10 +46,12 @@ public class EditActivity extends AppCompatActivity {
     private CheckBox checkFinished;
     private ArrayAdapter<String> spinnerArrayAdapter;
     ArrayList<String> spinnerArray;
+    private ImageView imgTakenPic;
     private Button deleteButton;
     private Button opslaanButton;
     private Button uploadBtn;
     private Button showBtn;
+    private Button cameraBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,15 @@ public class EditActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), ImageActivity.class);
                 i.putExtra("task_id", currentTask.getId());
                 startActivity(i);
+            }
+        });
+
+        //open camera button
+        cameraBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,CAM_REQUEST);
             }
         });
 
@@ -162,8 +176,10 @@ public class EditActivity extends AppCompatActivity {
         opslaanButton = findViewById(R.id.btnOpslaan);
         uploadBtn = findViewById(R.id.btnUploadImg);
         showBtn = findViewById(R.id.btnShowImg);
+        cameraBtn = findViewById(R.id.cameraBtn);
         currentTask = dataTasks.getTaskById(task_id);
         spinnerArray = new ArrayList<>();
+        imgTakenPic = (ImageView)findViewById(R.id.picture);
 
         //Add all categories to spinnerArray
         for (Category category : dataTasks.getAllCategories()) {
@@ -234,22 +250,31 @@ public class EditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-                if(data != null){
-                    Uri uri = data.getData();
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if(data != null){
+                Uri uri = data.getData();
 
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    currentTask.setAttachment(new Attachment(uri, bitmap, getContentResolver()));
-                    Toast.makeText(getApplicationContext(), currentTask.getAttachment().getName(), Toast.LENGTH_SHORT).show();
-
-                    dataTasks.saveTasks();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                currentTask.setAttachment(new Attachment(uri, bitmap, getContentResolver()));
+                Toast.makeText(getApplicationContext(), currentTask.getAttachment().getName(), Toast.LENGTH_SHORT).show();
+
+                dataTasks.saveTasks();
+            }
+        }
+        if(requestCode == CAM_REQUEST){
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            imgTakenPic.setImageBitmap(bitmap);
+            BitmapFactory.decodeResource(imgTakenPic.getResources(), R.drawable.ic_launcher_background);
+            ImageView imageview = (ImageView) findViewById(R.id.picture);
+            imageview.setImageBitmap(bitmap);
+
+            dataTasks.saveTasks();
         }
     }
 
