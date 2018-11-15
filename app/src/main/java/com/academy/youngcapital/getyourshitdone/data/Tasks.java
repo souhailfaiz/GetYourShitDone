@@ -110,12 +110,12 @@ public class Tasks implements Serializable {
         return lastCategory.getId() + 1 + rand.nextInt(1000) - rand.nextInt(50);
     }
 
-    public void createTask(String title, String description, boolean priority, Category category, String uriPicture) {
+    public void createTask(String title, String description, boolean priority, Category category, Attachment attachment) {
         Task newTask = new Task(getNewID(), title, description, priority, category);
 
 
-        if(uriPicture != null){
-            newTask.setUriPicture(uriPicture);
+        if(attachment != null){
+            newTask.setAttachment(attachment);
         }
 
         this.allTasks.add(newTask);

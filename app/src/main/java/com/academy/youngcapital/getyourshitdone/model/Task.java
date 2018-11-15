@@ -18,6 +18,7 @@ public class Task {
     private int id;
     private String title;
     private String description;
+    private Attachment attachment;
 
     private Category category;
     private String uriPicture;
@@ -31,6 +32,20 @@ public class Task {
         this.title = title;
         this.description = description;
 
+        this.category = category;
+
+        this.priority = priority;
+
+        this.isCompleted = false;
+
+        setDate();
+    }
+
+    public Task(int id, String title, String description, boolean priority, Category category, Attachment attachment) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.attachment = attachment;
         this.category = category;
 
         this.priority = priority;
@@ -92,12 +107,12 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
-    public String getUriPicture() {
-        return uriPicture;
+    public Attachment getAttachment() {
+        return attachment;
     }
 
-    public void setUriPicture(String uriPicture) {
-        this.uriPicture = uriPicture;
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
     }
 
     private void setDate() {

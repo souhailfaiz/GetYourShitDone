@@ -1,25 +1,16 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
-import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
-
-import java.io.File;
+import com.academy.youngcapital.getyourshitdone.util.ImageCoder;
 
 public class ImageActivity extends AppCompatActivity {
 
@@ -27,25 +18,25 @@ public class ImageActivity extends AppCompatActivity {
     private int task_id;
     private Task currentTask;
     private ImageView picture;
+    private ImageCoder imageCoder;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        picture = (ImageView)findViewById(R.id.picture);
+
         getDataFromPreviousScreen();
 
-        currentTask = dataTasks.getTaskById(task_id);
+        initView();
 
-        Toast.makeText(getApplicationContext(), "Picture: " + currentTask.getUriPicture(), Toast.LENGTH_SHORT).show();
+    }
 
-        if(!currentTask.getUriPicture().isEmpty()){
-            picture.setImageBitmap(decodeBase64(currentTask.getUriPicture()));
+    private void initView() {
+        picture = (ImageView)findViewById(R.id.picture);
+        if(currentTask.getAttachment() != null){
+            picture.setImageBitmap(imageCoder.decodeBase64(currentTask.getAttachment().getImage()));
         }
-
     }
 
     //get data from previous screen
@@ -54,11 +45,9 @@ public class ImageActivity extends AppCompatActivity {
 
         dataTasks = new Tasks(getApplicationContext());
         task_id = intent.getIntExtra("task_id",-1);
+        currentTask = dataTasks.getTaskById(task_id);
+        imageCoder = new ImageCoder();
     }
 
-    public static Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory
-                .decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
+
 }

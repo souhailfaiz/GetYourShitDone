@@ -1,18 +1,14 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
@@ -23,15 +19,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
+import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -242,6 +238,7 @@ public class EditActivity extends AppCompatActivity {
             if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
                 if(data != null){
                     Uri uri = data.getData();
+
                     Bitmap bitmap = null;
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -249,23 +246,15 @@ public class EditActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    currentTask.setAttachment(new Attachment(uri, bitmap, getContentResolver()));
+                    Toast.makeText(getApplicationContext(), currentTask.getAttachment().getName(), Toast.LENGTH_SHORT).show();
 
-                    currentTask.setUriPicture( encodeTobase64(bitmap));
                     dataTasks.saveTasks();
                 }
         }
     }
 
-    public String encodeTobase64(Bitmap image) {
-        Bitmap immage = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
-        Log.d("Image Log:", imageEncoded);
-        return imageEncoded;
-    }
 
 
 
