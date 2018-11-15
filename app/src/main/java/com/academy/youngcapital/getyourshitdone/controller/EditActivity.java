@@ -291,6 +291,7 @@ public class EditActivity extends AppCompatActivity {
                 //We get the Uri from the file
                 Uri uri = Uri.fromFile(file);
 
+                // we make a new bitmap from the uri
                 Bitmap bm = null;
                 try {
                     bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -298,8 +299,12 @@ public class EditActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                //we make a new attachment
                 currentTask.setAttachment(new Attachment(uri, bm));
+
                 showBtn.setEnabled(true);
+
+                //we save the image to sharedpreferences.
                 dataTasks.saveTasks();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
