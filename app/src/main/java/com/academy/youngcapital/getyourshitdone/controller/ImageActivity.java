@@ -12,6 +12,8 @@ import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ImageCoder;
 
+
+@SuppressWarnings("FieldCanBeLocal")
 public class ImageActivity extends AppCompatActivity {
 
     private Tasks dataTasks;
@@ -19,6 +21,7 @@ public class ImageActivity extends AppCompatActivity {
     private Task currentTask;
     private ImageView picture;
     private ImageCoder imageCoder;
+
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
