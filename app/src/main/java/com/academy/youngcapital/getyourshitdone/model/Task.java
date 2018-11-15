@@ -29,19 +29,6 @@ public class Task {
         setDate();
     }
 
-    public Task(int id, String title, String description, boolean priority, Category category, Attachment attachment) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.attachment = attachment;
-        this.category = category;
-
-        this.priority = priority;
-
-        this.isCompleted = false;
-
-        setDate();
-    }
 
     public int getId() {
         return id;

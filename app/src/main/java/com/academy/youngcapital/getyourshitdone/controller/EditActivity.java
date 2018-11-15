@@ -120,12 +120,10 @@ public class EditActivity extends AppCompatActivity {
 
 
                 String catName;
-                if(spinnerCategory.getSelectedItem() == null)
-                {
+                if(spinnerCategory.getSelectedItem() == null) {
                     catName = null;
                 }
-                else
-                {
+                else {
                     catName = spinnerCategory.getSelectedItem().toString();
                 }
 
@@ -133,8 +131,7 @@ public class EditActivity extends AppCompatActivity {
                     Category selectedCat = dataTasks.getCategoryByName(catName);
                     currentTask.setCategory(selectedCat);
                 }
-                else
-                {
+                else {
                     currentTask.setCategory(null);
                 }
 
@@ -160,6 +157,10 @@ public class EditActivity extends AppCompatActivity {
         switchPriority.setChecked(currentTask.getPriority());
         checkFinished.setChecked(currentTask.isCompleted());
         spinnerCategory.setAdapter(spinnerArrayAdapter);
+
+        if(currentTask.getAttachment() == null){
+            showBtn.setEnabled(false);
+        }
 
     }
 
@@ -262,6 +263,7 @@ public class EditActivity extends AppCompatActivity {
                 }
 
                 currentTask.setAttachment(new Attachment(uri, bitmap, getContentResolver()));
+                showBtn.setEnabled(true);
                 Toast.makeText(getApplicationContext(), currentTask.getAttachment().getName(), Toast.LENGTH_SHORT).show();
 
                 dataTasks.saveTasks();

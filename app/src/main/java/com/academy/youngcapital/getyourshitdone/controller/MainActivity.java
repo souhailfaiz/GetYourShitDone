@@ -1,8 +1,13 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -27,17 +32,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
+import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
 
-    private static final
-    String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
+    private static final int REQUEST_CODE = 43;
 
     // data/tasks.class
     public static Tasks dataTasks;
@@ -147,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    private TextView attachmentLabel;
     public void showAddTaskDialog(View view) {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -183,16 +191,26 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(simpleSwitch);
         simpleSwitch.setText("Priority");
 
-        //Category dropdown label
-        final TextView attachmentLabel = new TextView(this);
+        //filename
+        attachmentLabel = new TextView(this);
         attachmentLabel.setText("Attachment");
         layout.addView(attachmentLabel);
 
-        //prio with category
+        //ADD FILE btn
         final Button addFileBtn = new Button(this);
         layout.addView(addFileBtn);
         addFileBtn.setText("Add File");
 
+        // Add file Handler
+        addFileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentIMG = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intentIMG.setType("image/*");//Files having mime datatype
+                intentIMG.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intentIMG, REQUEST_CODE);
+            }
+        });
 
 
         //create dialog
@@ -219,7 +237,8 @@ public class MainActivity extends AppCompatActivity {
                         String taskDescription = String.valueOf(taskEditText21.getText());
 
                         if (taskTitle.length() > 2 && taskDescription.length() > 2) {
-                            dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), null);
+                            dataTasks.createTask(taskTitle, taskDescription, priority, dataTasks.getCategoryByName(category), tempAttachment);
+                            loadTasks();//???
                         } else {
                             Toast.makeText(getApplicationContext(), "Voer een titel en beschrijving toe!", Toast.LENGTH_LONG).show();
                         }
@@ -327,5 +346,30 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return true;
+    }
+
+
+
+    private Attachment tempAttachment;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if(data != null){
+                Uri uri = data.getData();
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                tempAttachment = (new Attachment(uri, bitmap, getContentResolver()));
+                attachmentLabel.setText(tempAttachment.getName());
+            }
+        }
     }
 }
