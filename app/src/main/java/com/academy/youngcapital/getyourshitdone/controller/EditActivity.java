@@ -1,9 +1,11 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -28,6 +30,10 @@ import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -270,13 +276,35 @@ public class EditActivity extends AppCompatActivity {
             }
         }
         if(requestCode == CAM_REQUEST){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imgTakenPic.setImageBitmap(bitmap);
-            BitmapFactory.decodeResource(imgTakenPic.getResources(), R.drawable.ic_launcher_background);
-            ImageView imageview = (ImageView) findViewById(R.id.picture);
-            imageview.setImageBitmap(bitmap);
 
-            dataTasks.saveTasks();
+            try {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+                // Here we make a file on the given path
+                FileOutputStream fos = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + "/_camera.png"));
+
+                // Bitmap compresses to a png and writes it to the file
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+                // We get the stored image in the file.
+                File file = new File(Environment.getExternalStorageDirectory() + "/_camera.png");
+                //We get the Uri from the file
+                Uri uri = Uri.fromFile(file);
+
+                Bitmap bm = null;
+                try {
+                    bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                currentTask.setAttachment(new Attachment(uri, bm));
+                showBtn.setEnabled(true);
+                dataTasks.saveTasks();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
