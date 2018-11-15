@@ -7,9 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,7 +33,8 @@ public class ImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         picture = (ImageView)findViewById(R.id.picture);
         getDataFromPreviousScreen();
 
@@ -39,9 +42,11 @@ public class ImageActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Picture: " + currentTask.getUriPicture(), Toast.LENGTH_SHORT).show();
 
-        picture.setImageBitmap(decodeBase64(currentTask.getUriPicture()));
-    }
+        if(!currentTask.getUriPicture().isEmpty()){
+            picture.setImageBitmap(decodeBase64(currentTask.getUriPicture()));
+        }
 
+    }
 
     //get data from previous screen
     private void getDataFromPreviousScreen(){

@@ -36,8 +36,6 @@ public class Tasks implements Serializable {
         // Set context & Wrapper
         this.context = context;
 
-
-
         // OPGESLAGEN TASKS OPHALEN //
 
         // shared pref
@@ -112,7 +110,7 @@ public class Tasks implements Serializable {
         return lastCategory.getId() + 1 + rand.nextInt(1000) - rand.nextInt(50);
     }
 
-    public void createTask(String title, String description, boolean priority, Category category, Bitmap uriPicture) {
+    public void createTask(String title, String description, boolean priority, Category category, String uriPicture) {
         Task newTask = new Task(getNewID(), title, description, priority, category);
 
 

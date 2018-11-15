@@ -9,4 +9,13 @@
         tools:ignore="AppCompatResource"
 
         />
+
+    <item
+        android:id="@+id/menu_back"
+        android:showAsAction="always"
+        android:title="Share"
+        android:actionProviderClass="android.widget."
+        tools:ignore="AppCompatResource"
+
+        />
 </menu>
