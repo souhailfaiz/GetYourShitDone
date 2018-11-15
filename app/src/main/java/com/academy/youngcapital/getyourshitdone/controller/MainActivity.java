@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadTasks() {
-        listView = (ListView) findViewById(R.id.list_tasks);
+        listView = findViewById(R.id.list_tasks);
 
         listAdapter = new ListAdapter(getApplicationContext(), dataTasks);
 
@@ -95,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navigationButtonsEventListener() {
-        final NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+        final NavigationView navView = findViewById(R.id.navigationId);
         //add button to the layout
         Menu menu = navView.getMenu();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                NavigationView navView = findViewById(R.id.navigationId);
                 // Add category and All categories button listener in navigation
                 switch (item.getItemId()) {
                     case R.id.addcategory:
@@ -183,6 +183,18 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(simpleSwitch);
         simpleSwitch.setText("Priority");
 
+        //Category dropdown label
+        final TextView attachmentLabel = new TextView(this);
+        attachmentLabel.setText("Attachment");
+        layout.addView(attachmentLabel);
+
+        //prio with category
+        final Button addFileBtn = new Button(this);
+        layout.addView(addFileBtn);
+        addFileBtn.setText("Add File");
+
+
+
         //create dialog
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Task")
@@ -226,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "" + view.getId());
 
-                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                NavigationView navView = findViewById(R.id.navigationId);
                 navView.getMenu().removeItem(view.getId());
                 dataTasks.removeCategoryById(view.getId());
                 if (view.getId() == 0) {
@@ -266,20 +278,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        View.OnClickListener btnclick = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Log.d(TAG, "" + view.getId());
-
-                                NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
-                                navView.getMenu().removeItem(view.getId());
-                                dataTasks.removeCategoryById(view.getId());
-                                if (view.getId() == 0) {
-                                    navView.getMenu().removeItem(0);
-                                }
-                            }
-                        };
-
                         String categoryName = String.valueOf(taskEditText1.getText());
                         String categoryColor = String.valueOf(taskEditText2.getText());
                         Category cat = new Category(dataTasks.getNewIDCategory(), categoryName, categoryColor);
@@ -287,9 +285,10 @@ public class MainActivity extends AppCompatActivity {
                             dataTasks.createCategory(cat);
                         } else {
                             Toast.makeText(getApplicationContext(), "Voer een titel toe!", Toast.LENGTH_LONG).show();
+                            return;
                         }
 
-                        NavigationView navView = (NavigationView) findViewById(R.id.navigationId);
+                        NavigationView navView = findViewById(R.id.navigationId);
                         Menu menu = navView.getMenu();
 
 

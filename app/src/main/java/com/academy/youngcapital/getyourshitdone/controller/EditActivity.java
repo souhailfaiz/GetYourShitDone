@@ -42,7 +42,7 @@ public class EditActivity extends AppCompatActivity {
     private Spinner spinnerCategory;
     private CheckBox checkFinished;
     private ArrayAdapter<String> spinnerArrayAdapter;
-    private ArrayList<String> spinnerArray;
+    ArrayList<String> spinnerArray;
     private Button deleteButton;
     private Button opslaanButton;
     private Button uploadBtn;
@@ -153,17 +153,17 @@ public class EditActivity extends AppCompatActivity {
     private void initView() {
         actionBar = getSupportActionBar();
 
-        editTitle = (EditText)findViewById(R.id.editTitle);
-        editNotes = (EditText)findViewById(R.id.editNotes);
-        switchPriority = (Switch)findViewById(R.id.editPriority);
-        spinnerCategory = (Spinner)findViewById(R.id.editCat);
-        checkFinished = (CheckBox)findViewById(R.id.editIsCompleted);
-        deleteButton = (Button)findViewById(R.id.btnDelete);
-        opslaanButton = (Button)findViewById(R.id.btnOpslaan);
-        uploadBtn = (Button)findViewById(R.id.btnUploadImg);
-        showBtn = (Button)findViewById(R.id.btnShowImg);
+        editTitle = findViewById(R.id.editTitle);
+        editNotes = findViewById(R.id.editNotes);
+        switchPriority = findViewById(R.id.editPriority);
+        spinnerCategory = findViewById(R.id.editCat);
+        checkFinished = findViewById(R.id.editIsCompleted);
+        deleteButton = findViewById(R.id.btnDelete);
+        opslaanButton = findViewById(R.id.btnOpslaan);
+        uploadBtn = findViewById(R.id.btnUploadImg);
+        showBtn = findViewById(R.id.btnShowImg);
         currentTask = dataTasks.getTaskById(task_id);
-        spinnerArray = new ArrayList<String>();
+        spinnerArray = new ArrayList<>();
 
         //Add all categories to spinnerArray
         for (Category category : dataTasks.getAllCategories()) {
@@ -171,7 +171,7 @@ public class EditActivity extends AppCompatActivity {
         }
 
         //set spinner adapter
-        spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
     }
 
     //get data from previous screen
