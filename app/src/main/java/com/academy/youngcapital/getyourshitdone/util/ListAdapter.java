@@ -1,23 +1,18 @@
 package com.academy.youngcapital.getyourshitdone.util;
 
 import android.content.Context;
-import android.graphics.ColorSpace;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.academy.youngcapital.getyourshitdone.R;
 import com.academy.youngcapital.getyourshitdone.data.Tasks;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListAdapter extends BaseAdapter {
@@ -56,8 +51,8 @@ public class ListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context, R.layout.listview_item, null);
 
-        final TextView textView = (TextView) v.findViewById(R.id.taskTitle);
-        final CheckBox checkBox = (CheckBox) v.findViewById(R.id.taskCheckBox);
+        final TextView textView = v.findViewById(R.id.taskTitle);
+        final CheckBox checkBox = v.findViewById(R.id.taskCheckBox);
 
         //set alle text naar titel van elke task
         textView.setText(taskList.get(position).getTitle());

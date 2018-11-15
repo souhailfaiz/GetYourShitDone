@@ -2,7 +2,6 @@ package com.academy.youngcapital.getyourshitdone.util;
 
 import com.academy.youngcapital.getyourshitdone.model.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListSorter {
