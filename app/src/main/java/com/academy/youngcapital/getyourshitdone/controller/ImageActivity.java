@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ public class ImageActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Picture: " + currentTask.getUriPicture(), Toast.LENGTH_SHORT).show();
 
-        picture.setImageBitmap(currentTask.getUriPicture());
+        picture.setImageBitmap(decodeBase64(currentTask.getUriPicture()));
     }
 
 
@@ -48,5 +49,11 @@ public class ImageActivity extends AppCompatActivity {
 
         dataTasks = new Tasks(getApplicationContext());
         task_id = intent.getIntExtra("task_id",-1);
+    }
+
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory
+                .decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 }
