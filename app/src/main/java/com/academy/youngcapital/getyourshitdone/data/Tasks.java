@@ -128,25 +128,12 @@ public class Tasks implements Serializable {
         this.saveTasks();
     }
 
-    public void createCategory(String name, String kleur) {
-        this.allCategories.add(new Category(getNewIDCategory(), name, kleur));
-        this.saveCategories();
-    }
-
 
     public void createCategory(Category cat) {
         this.allCategories.add(cat);
         this.saveCategories();
     }
 
-
-    public ArrayList<String> getItems() {
-        ArrayList<String> list = new ArrayList<>();
-        for (Task item : this.allTasks) {
-            list.add(item.getTitle());
-        }
-        return list;
-    }
 
     public ArrayList<Task> getTasksByCategory(int category) {
         ArrayList<Task> filteredTasks = new ArrayList<>();

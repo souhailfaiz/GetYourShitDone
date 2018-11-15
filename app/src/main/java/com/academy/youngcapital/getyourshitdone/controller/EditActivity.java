@@ -1,13 +1,10 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
