@@ -30,8 +30,12 @@ public class Tasks implements Serializable {
         // Set context & Wrapper
         this.context = context;
 
-        // OPGESLAGEN TASKS OPHALEN //
+        //Opgeslagen tasks & Categorien ophalen
+        readSharedPrefs();
+    }
 
+    public void readSharedPrefs()
+    {
         // shared pref
         sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);
 
@@ -45,7 +49,6 @@ public class Tasks implements Serializable {
         if (testList != null) {
             for (Task item : testList) {
                 this.createTask(item);
-                Log.d("MainActivity", item.getTitle());
             }
         }
 
@@ -66,7 +69,6 @@ public class Tasks implements Serializable {
                 this.createCategory(item);
             }
         }
-
     }
 
     public void deleteTask(int id) {
