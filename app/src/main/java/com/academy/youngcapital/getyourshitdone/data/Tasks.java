@@ -2,24 +2,17 @@ package com.academy.youngcapital.getyourshitdone.data;
 
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.Log;
 
-import com.academy.youngcapital.getyourshitdone.controller.MainActivity;
-import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 public class Tasks implements Serializable {
@@ -39,14 +32,13 @@ public class Tasks implements Serializable {
         // OPGESLAGEN TASKS OPHALEN //
 
         // shared pref
-        sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);
 
         // data ophalen uit file
         String json = sharedPreferences.getString("task list", null);
         Type type = new TypeToken<ArrayList<Task>>() {
         }.getType();
-        ArrayList<Task> testList = new ArrayList<>();
-        testList = gson.fromJson(json, type);
+        ArrayList<Task> testList = gson.fromJson(json, type);
 
         // Loop door json objects en in arrayList zetten
         if (testList != null) {
@@ -59,14 +51,13 @@ public class Tasks implements Serializable {
         // OPGESLAGEN CATEGORIES OPHALEN //
 
         // shared pref
-        sharedPreferences = this.context.getSharedPreferences("catStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("catStorage", Context.MODE_PRIVATE);
 
         // data ophalen uit file
         json = sharedPreferences.getString("cat list", null);
         type = new TypeToken<ArrayList<Category>>() {
         }.getType();
-        ArrayList<Category> testList2 = new ArrayList<>();
-        testList2 = gson.fromJson(json, type);
+        ArrayList<Category> testList2 = gson.fromJson(json, type);
 
         // loop door alle categoriene en toevoegen aan menu
         if (testList2 != null) {
@@ -94,7 +85,7 @@ public class Tasks implements Serializable {
         }
 
         Random rand = new Random();
-        Task lastTask = getAllTasks().get(getAllTasks().size() - 1) ;
+        Task lastTask = getAllTasks().get(getAllTasks().size() - 1);
 
         return lastTask.getId() + 1 + rand.nextInt(1000) - rand.nextInt(50);
     }
@@ -114,7 +105,7 @@ public class Tasks implements Serializable {
         Task newTask = new Task(getNewID(), title, description, priority, category);
 
 
-        if(uriPicture != null){
+        if (uriPicture != null) {
             newTask.setUriPicture(uriPicture);
         }
 
@@ -123,7 +114,7 @@ public class Tasks implements Serializable {
     }
 
     // Method overloading - Voor direct task toevoegen
-    public void createTask(Task addableTask) {
+    private void createTask(Task addableTask) {
         this.allTasks.add(addableTask);
         this.saveTasks();
     }
@@ -140,7 +131,7 @@ public class Tasks implements Serializable {
         Log.d("catID:", Integer.toString(category));
 
         for (Task item : allTasks) {
-            if(item.getCategory() != null) {
+            if (item.getCategory() != null) {
                 if (item.getCategory().getId() == category) {
                     filteredTasks.add(item);
                 }
@@ -176,7 +167,7 @@ public class Tasks implements Serializable {
     public void saveTasks() {
 
         // Sharedpref opzetten
-        sharedPreferences = this.context.getSharedPreferences("tasksStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization
@@ -196,9 +187,9 @@ public class Tasks implements Serializable {
         return null;
     }
 
-    public void saveCategories() {
+    private void saveCategories() {
         // Sharedpref opzetten
-        sharedPreferences = this.context.getSharedPreferences("catStorage", this.context.MODE_PRIVATE);
+        sharedPreferences = this.context.getSharedPreferences("catStorage", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization

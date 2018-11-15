@@ -1,17 +1,5 @@
 package com.academy.youngcapital.getyourshitdone.model;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import com.academy.youngcapital.getyourshitdone.model.Attachment;
-import com.academy.youngcapital.getyourshitdone.model.Category;
-
-
-import java.io.Serializable;
-import java.net.URI;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Task {
@@ -101,9 +89,7 @@ public class Task {
     }
 
     private void setDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        this.date = date;
+        this.date = new Date();
     }
 
 

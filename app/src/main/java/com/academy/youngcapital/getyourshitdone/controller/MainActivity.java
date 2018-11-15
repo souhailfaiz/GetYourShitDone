@@ -184,6 +184,18 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(simpleSwitch);
         simpleSwitch.setText("Priority");
 
+        //Category dropdown label
+        final TextView attachmentLabel = new TextView(this);
+        attachmentLabel.setText("Attachment");
+        layout.addView(attachmentLabel);
+
+        //prio with category
+        final Button addFileBtn = new Button(this);
+        layout.addView(addFileBtn);
+        addFileBtn.setText("Add File");
+
+
+
         //create dialog
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a new Task")
