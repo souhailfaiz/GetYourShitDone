@@ -285,7 +285,7 @@ public class EditActivity extends AppCompatActivity {
         }
 
         // als er een foto met de camera is gemaakt
-        if(requestCode == CAM_REQUEST){
+        if(requestCode == CAM_REQUEST && resultCode != Activity.RESULT_CANCELED){
 
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
