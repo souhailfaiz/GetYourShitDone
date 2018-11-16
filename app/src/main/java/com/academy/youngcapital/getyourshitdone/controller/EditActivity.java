@@ -88,7 +88,7 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ImageActivity.class);
                 i.putExtra("task_id", currentTask.getId());
-                startActivity(i);
+                startActivityForResult(i, 901);
             }
         });
 
@@ -257,6 +257,14 @@ public class EditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // als afbeelding verwijderd is
+        if(resultCode == 1337) {
+            if (data.getIntExtra("deleted", 0) == 1) {
+                showBtn.setEnabled(false);
+            }
+        }
+
+        // als afbeelding geupload is
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             if(data != null){
                 Uri uri = data.getData();
@@ -275,40 +283,15 @@ public class EditActivity extends AppCompatActivity {
                 dataTasks.saveTasks();
             }
         }
+
+        // als er een foto met de camera is gemaakt
         if(requestCode == CAM_REQUEST){
 
-            try {
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                // Here we make a file on the given path
-                FileOutputStream fos = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + "/_camera.png"));
-
-                // Bitmap compresses to a png and writes it to the file
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-
-                // We get the stored image in the file.
-                File file = new File(Environment.getExternalStorageDirectory() + "/_camera.png");
-                //We get the Uri from the file
-                Uri uri = Uri.fromFile(file);
-
-                // we make a new bitmap from the uri
-                Bitmap bm = null;
-                try {
-                    bm = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //we make a new attachment
-                currentTask.setAttachment(new Attachment(uri, bm));
-
-                showBtn.setEnabled(true);
-
-                //we save the image to sharedpreferences.
-                dataTasks.saveTasks();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            currentTask.setAttachment(new Attachment(photo));
+            showBtn.setEnabled(true);
+            dataTasks.saveTasks();
 
         }
     }

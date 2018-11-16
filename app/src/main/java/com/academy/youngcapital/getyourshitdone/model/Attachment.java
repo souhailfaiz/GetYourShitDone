@@ -35,6 +35,14 @@ public class Attachment extends UriExtractor{
         image = imageCoder.encodeTobase64(bitmap);
     }
 
+    public Attachment(Bitmap bitmap) {
+        /**uri is an abstract class, so we can not save the uri in this model because this model
+         will be saved and abstract classes can not be saved into sharedpreferences.**/
+        super();
+        imageCoder = new ImageCoder();
+
+        image = imageCoder.encodeTobase64(bitmap);
+    }
 
     public String getImage() {
         return image;
