@@ -74,7 +74,7 @@ public class EditActivity extends AppCompatActivity {
         setView();
 
 
-        //upload image
+        //upload image knop voert method uit.
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +82,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        //show image
+        //show image knop opent nieuwe scherm
         showBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +92,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        //open camera button
+        //open camera button opent camera van je telefoon
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +101,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-
+        // delete knop verwijdert de task en returned je naar de mainactivty met een updated listadapter.
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +116,8 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        //opslaan
+        //opslaan update alle velden van de huidige task en
+        // update daarna de listadapter en stuurt je terug naar mainactivity
         opslaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +246,8 @@ public class EditActivity extends AppCompatActivity {
         return message.toString();
     }
 
+    //Dit opent je documenten folder van je telefoon om een afbeelding lokaal te kiezen en up te
+    //loaden naar de applicatie
     private void startSearch(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");//Files having mime datatype
@@ -252,7 +255,7 @@ public class EditActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    //Bitmap aanmaken
+    //Dit wordt aangeroepen als de activity sluit.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -264,7 +267,7 @@ public class EditActivity extends AppCompatActivity {
             }
         }
 
-        // als afbeelding geupload is
+        // als afbeelding geupload is, dan halen we de bitmap van de uri en daarna voegen we het als attachment toe aan de task.
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             if(data != null){
                 Uri uri = data.getData();
@@ -284,7 +287,7 @@ public class EditActivity extends AppCompatActivity {
             }
         }
 
-        // als er een foto met de camera is gemaakt
+        // als er een foto met de camera is gemaakt, pakken we de bitmap en slaan we het op als Attachment.
         if(requestCode == CAM_REQUEST && resultCode != Activity.RESULT_CANCELED){
 
             Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -292,7 +295,6 @@ public class EditActivity extends AppCompatActivity {
             currentTask.setAttachment(new Attachment(photo));
             showBtn.setEnabled(true);
             dataTasks.saveTasks();
-
         }
     }
 
