@@ -8,6 +8,7 @@ public class Category{
     private String color;
     private int colorCode;
 
+    // Public constructor van de category
     public Category(int id, String title, String color) {
         this.id = id;
         this.title = title;
@@ -16,11 +17,13 @@ public class Category{
         this.colorCode = createColor(color);
     }
 
+    // Get colorcode
     public int getColorCode()
     {
         return this.colorCode;
     }
 
+    // Colorcode aanmaken van text naar color code.
     private int createColor(String color) {
 
         switch (color.toLowerCase()) {
@@ -43,14 +46,17 @@ public class Category{
         }
     }
 
+    // Getter voor ID
     public int getId(){
         return this.id;
     }
 
+    // Getter voor titel
     public String getTitle(){
         return this.title;
     }
 
+    // Getter voor kleur
     public String getColor(){
         return this.color;
     }
