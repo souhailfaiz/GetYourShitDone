@@ -251,6 +251,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Button createButton(int id) {
+        /*
+         * Create a button for category
+         * return: Category remove button
+         */
         final Button removeCategoryButton = new Button(this);
         View.OnClickListener btnclick = new View.OnClickListener() {
             @Override
@@ -273,8 +277,10 @@ public class MainActivity extends AppCompatActivity {
         return removeCategoryButton;
     }
 
-    //add new category dialog
     public void showaddCategoryDialog() {
+        /*
+         * add new category dialog
+         */
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
