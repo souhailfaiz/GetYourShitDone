@@ -1,9 +1,11 @@
 package com.academy.youngcapital.getyourshitdone.controller;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -28,6 +30,10 @@ import com.academy.youngcapital.getyourshitdone.model.Attachment;
 import com.academy.youngcapital.getyourshitdone.model.Category;
 import com.academy.youngcapital.getyourshitdone.model.Task;
 import com.academy.youngcapital.getyourshitdone.util.ListAdapter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -82,7 +88,7 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ImageActivity.class);
                 i.putExtra("task_id", currentTask.getId());
-                startActivity(i);
+                startActivityForResult(i, 901);
             }
         });
 
@@ -251,6 +257,14 @@ public class EditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // als afbeelding verwijderd is
+        if(resultCode == 1337) {
+            if (data.getIntExtra("deleted", 0) == 1) {
+                showBtn.setEnabled(false);
+            }
+        }
+
+        // als afbeelding geupload is
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             if(data != null){
                 Uri uri = data.getData();
@@ -269,14 +283,16 @@ public class EditActivity extends AppCompatActivity {
                 dataTasks.saveTasks();
             }
         }
-        if(requestCode == CAM_REQUEST){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imgTakenPic.setImageBitmap(bitmap);
-            BitmapFactory.decodeResource(imgTakenPic.getResources(), R.drawable.ic_launcher_background);
-            ImageView imageview = (ImageView) findViewById(R.id.picture);
-            imageview.setImageBitmap(bitmap);
 
+        // als er een foto met de camera is gemaakt
+        if(requestCode == CAM_REQUEST && resultCode != Activity.RESULT_CANCELED){
+
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+
+            currentTask.setAttachment(new Attachment(photo));
+            showBtn.setEnabled(true);
             dataTasks.saveTasks();
+
         }
     }
 

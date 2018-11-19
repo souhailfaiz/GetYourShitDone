@@ -34,8 +34,7 @@ public class Tasks implements Serializable {
         readSharedPrefs();
     }
 
-    private void readSharedPrefs()
-    {
+    private void readSharedPrefs() {
         // shared pref
         sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);
 
@@ -72,6 +71,9 @@ public class Tasks implements Serializable {
     }
 
     public void deleteTask(int id) {
+        /*
+         * Delete a task by id
+         */
         for (Task item : allTasks) {
             if (item.getId() == id) {
                 allTasks.remove(item);
@@ -83,6 +85,10 @@ public class Tasks implements Serializable {
     }
 
     private int getNewID() {
+        /*
+         * Create a random new id.
+         * return: Random id that doesn't exist.
+         */
         if (allTasks.size() < 1) {
             return 0;
         }
@@ -94,6 +100,10 @@ public class Tasks implements Serializable {
     }
 
     public int getNewIDCategory() {
+        /*
+         * Create a random new id.
+         * return: Random id that doesn't exist.
+         */
         if (allCategories.size() < 1) {
             return 0;
         }
@@ -105,29 +115,43 @@ public class Tasks implements Serializable {
     }
 
     public void createTask(String title, String description, boolean priority, Category category, Attachment attachment) {
+        /*
+         * Create a new task
+         */
         Task newTask = new Task(getNewID(), title, description, priority, category);
 
-        if(attachment != null) {
+        if (attachment != null) {
             newTask.setAttachment(attachment);
         }
         this.allTasks.add(newTask);
         this.saveTasks();
     }
 
-    // Method overloading - Voor direct task toevoegen
+
     private void createTask(Task addableTask) {
+        /*
+         * Create a new task
+         * Method overloading - To add tasks directly
+         */
         this.allTasks.add(addableTask);
         this.saveTasks();
     }
 
 
     public void createCategory(Category cat) {
+        /*
+         * Create a new category
+         */
         this.allCategories.add(cat);
         this.saveCategories();
     }
 
 
     public ArrayList<Task> getTasksByCategory(int category) {
+        /*
+         * Get all tasks by category id
+         * return: Arraylist with same category
+         */
         ArrayList<Task> filteredTasks = new ArrayList<>();
         Log.d("catID:", Integer.toString(category));
 
@@ -142,11 +166,17 @@ public class Tasks implements Serializable {
     }
 
     public void removeAllCategories() {
+        /*
+         * remove all categories
+         */
         this.allCategories.clear();
         saveCategories();
     }
 
     public void removeCategoryById(int id) {
+        /*
+         * remove category by id
+         */
         for (Category category : this.getAllCategories()) {
             if (category.getId() == id) {
                 this.allCategories.remove(category);
@@ -158,28 +188,39 @@ public class Tasks implements Serializable {
     }
 
     public ArrayList<Task> getAllTasks() {
+        /*
+         * Get all tasks
+         * return: Arraylist with all tasks
+         */
         return this.allTasks;
     }
 
     public ArrayList<Category> getAllCategories() {
+        /*
+         * Get all categories
+         * return: Arraylist with all categories
+         */
         return this.allCategories;
     }
 
     public void saveTasks() {
-
-        // Sharedpref opzetten
+        // setup Sharedpref
         sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization
         String json = gson.toJson(this.getAllTasks());
 
-        // In bestand opslaan
+        // save in file
         editor.putString("task list", json);
         editor.apply();
     }
 
     public Category getCategoryByName(String name) {
+        /*
+         * Get category by name
+         * return: category object
+         */
         for (Category category : this.getAllCategories()) {
             if (category.getTitle().contains(name)) {
                 return category;
@@ -189,19 +230,23 @@ public class Tasks implements Serializable {
     }
 
     private void saveCategories() {
-        // Sharedpref opzetten
+        // setup Sharedpref
         sharedPreferences = this.context.getSharedPreferences("catStorage", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         // Object serialization
         String json = gson.toJson(this.getAllCategories());
 
-        // In bestand opslaan
+        // save in file
         editor.putString("cat list", json);
         editor.apply();
     }
 
     public Task getTaskById(int id) {
+        /*
+         * Get a task by id
+         * return: task object
+         */
         for (Task item : this.getAllTasks()) {
             if (item.getId() == id) {
                 return item;
