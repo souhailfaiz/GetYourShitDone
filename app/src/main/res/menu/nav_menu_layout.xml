@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+
+    <group android:id="@+id/navmenu" android:checkableBehavior="single">
+    <item
+        android:id="@+id/removeallcategories"
+        android:title="Remove all categories"
+        />
+
+    <item
+        android:id="@+id/addcategory"
+        android:title="Add Category"
+
+        />
+    <item
+        android:id="@+id/allcategories"
+        android:title="All Categories"
+        />
+
+
+</group>
+
+
+    <item android:title="Category">
+        <menu>
+
+
+        </menu>
+
+
+    </item>
+
+
+</menu>
