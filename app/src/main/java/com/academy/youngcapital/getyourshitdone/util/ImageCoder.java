@@ -12,9 +12,7 @@ public class ImageCoder {
     public String encodeTobase64(Bitmap bitmap) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-        String imageEncoded = Base64.encodeToString(output.toByteArray(), Base64.DEFAULT);
-
-        return imageEncoded;
+        return Base64.encodeToString(output.toByteArray(), Base64.DEFAULT);
     }
 
     public Bitmap decodeBase64(String image) {

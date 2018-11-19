@@ -34,7 +34,7 @@ public class Tasks implements Serializable {
         readSharedPrefs();
     }
 
-    public void readSharedPrefs()
+    private void readSharedPrefs()
     {
         // shared pref
         sharedPreferences = this.context.getSharedPreferences("tasksStorage", Context.MODE_PRIVATE);

@@ -95,7 +95,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        // delete knop
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +180,7 @@ public class EditActivity extends AppCompatActivity {
         cameraBtn = findViewById(R.id.cameraBtn);
         currentTask = dataTasks.getTaskById(task_id);
         spinnerArray = new ArrayList<>();
-        imgTakenPic = (ImageView)findViewById(R.id.picture);
+        imgTakenPic = findViewById(R.id.picture);
 
         //Add all categories to spinnerArray
         for (Category category : dataTasks.getAllCategories()) {

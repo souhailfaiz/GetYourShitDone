@@ -9,7 +9,6 @@ public class Task {
     private Attachment attachment;
 
     private Category category;
-    private String uriPicture;
 
     private boolean priority;
     private boolean isCompleted;

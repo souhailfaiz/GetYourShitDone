@@ -36,7 +36,7 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        picture = (ImageView)findViewById(R.id.picture);
+        picture = findViewById(R.id.picture);
         if(currentTask.getAttachment() != null){
             picture.setImageBitmap(imageCoder.decodeBase64(currentTask.getAttachment().getImage()));
         }
