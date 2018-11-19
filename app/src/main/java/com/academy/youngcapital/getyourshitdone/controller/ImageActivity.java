@@ -43,6 +43,7 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
         picture = (ImageView)findViewById(R.id.picture);
         btnDelete = findViewById(R.id.btnDelete);
 

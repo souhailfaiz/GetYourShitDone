@@ -9,13 +9,13 @@ public class Task {
     private Attachment attachment;
 
     private Category category;
-    private String uriPicture;
 
     private boolean priority;
     private boolean isCompleted;
     private Date date;
 
     public Task(int id, String title, String description, boolean priority, Category category) {
+        // create new task
         this.id = id;
         this.title = title;
         this.description = description;
@@ -29,6 +29,7 @@ public class Task {
         setDate();
     }
 
+    //getters and setters for task
 
     public int getId() {
         return id;
