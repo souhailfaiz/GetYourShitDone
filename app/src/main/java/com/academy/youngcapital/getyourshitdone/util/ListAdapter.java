@@ -21,11 +21,24 @@ public class ListAdapter extends BaseAdapter {
     private List<Task> taskList;
     private Tasks dataTasks;
 
+    /**
+     * Deze listadapter constructor wordt gebruikt door listview en bevat een list met tasks en er
+     * kunnen verschillende lists gestuurd worden op basis van category
+     *
+     * @param context
+     * @param taskList
+     */
     public ListAdapter(Context context, List<Task> taskList) {
         this.context = context;
         this.taskList = taskList;
     }
 
+    /**
+     * Deze listadapter constructor wordt gebruikt om alle tasks te sturen met de methodes van
+     * model Tasks.
+     * @param context
+     * @param dataTasks
+     */
     public ListAdapter(Context context, Tasks dataTasks) {
         this.dataTasks = dataTasks;
         this.context = context;
@@ -47,6 +60,13 @@ public class ListAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Hier maken we een view aan met de layout van listview_item. Voor elke item wordt die layout
+     * gebruikt en toegevoegd in een listadapter. Zo heeft elke element in de list
+     * een textview en een checkbox.
+     *
+     * @return view
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context, R.layout.listview_item, null);
@@ -54,15 +74,18 @@ public class ListAdapter extends BaseAdapter {
         final TextView textView = v.findViewById(R.id.taskTitle);
         final CheckBox checkBox = v.findViewById(R.id.taskCheckBox);
 
-        //set alle text naar titel van elke task
+        //set de text van een list element naar de titel van elke task.
         textView.setText(taskList.get(position).getTitle());
 
+        //set de color van de text naar de color van de category.
         if(taskList.get(position).getCategory() != null) {
             textView.setTextColor(taskList.get(position).getCategory().getColorCode());
         }
 
+        //set de checkbox checked of unchecked op basis van elke task.
         checkBox.setChecked(taskList.get(position).isCompleted());
 
+        //set de text dikgedrukt als de task prioriteit is gevinkt.
         if(taskList.get(position).getPriority())
         {
             textView.setTypeface(null, Typeface.BOLD);
@@ -78,6 +101,7 @@ public class ListAdapter extends BaseAdapter {
 
         }
 
+        //run dit als er op een checkbox wordt geklikt
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +121,7 @@ public class ListAdapter extends BaseAdapter {
             }
         });
 
-        //save task id to tag
+        //save task id to tag om elke list element te koppelen aan de id.
         v.setTag(taskList.get(position).getId());
 
         if (dataTasks != null) {

@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 
 public class ImageCoder {
 
+    //encodes een bitmap naar een base64 string en returned het.
     public String encodeTobase64(Bitmap bitmap) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
@@ -17,6 +18,7 @@ public class ImageCoder {
         return imageEncoded;
     }
 
+    //decodes een string naar een bitmap.
     public Bitmap decodeBase64(String image) {
         return BitmapFactory.decodeByteArray(Base64.decode(image, 0), 0, Base64.decode(image, 0).length);
     }
